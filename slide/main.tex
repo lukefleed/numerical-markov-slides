@@ -1,0 +1,961 @@
+\documentclass{beamer}
+\usetheme{Warsaw}
+\usecolortheme{seahorse}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{lipsum}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{mathtools}
+\usepackage{nccmath}
+\newcommand{\N}{\mathbb{N}}
+
+\title{Queueing System with Potential for Recruiting Secondary Servers}
+\author{Luca Lombardo}
+\institute{Seminario per Metodi Numerici per Catene di Markov}
+\date{}
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+\begin{frame}
+    \frametitle{Struttura del seminario}
+    \tableofcontents
+\end{frame}
+
+\section{Introduzione}
+\begin{frame}
+    \frametitle{Queueing Theory}
+    \begin{itemize}
+        \item I modelli di coda sono strumenti matematici utilizzati per rappresentare sistemi di risorse che devono essere utilizzati da diversi utenti, chiamati "clienti".
+        \item La terminologia deriva da applicazioni come gli sportelli bancari o i caselli autostradali, dove i clienti effettivamente si mettono in coda finché non vengono serviti da un dipendente.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Queueing Theory}
+    \begin{block}{Code semplici}
+        \begin{itemize}
+            \item Le code semplici consistono di un solo server che attende un solo cliente alla volta, in ordine di arrivo
+            \item Si assume che il tempo sia discretizzato in intervalli di lunghezza fissa
+            \item Un numero casuale di clienti si unisce al sistema durante ogni intervallo
+            \item Il server rimuove un cliente dalla coda alla fine di ogni intervallo, se presente
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Queueing Theory}
+Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_n$ il numero di clienti nel sistema al tempo $n$, abbiamo:
+\begin{equation*}
+    X_{n+1} =
+    \begin{cases}
+        X_n + \alpha_{n+1} - 1 & \text{se } X_n + \alpha_{n+1} \geq 1 \\
+        0 & \text{se } X_n + \alpha_{n+1} = 0
+    \end{cases}
+\end{equation*}
+\begin{block}{}
+    Se ${\alpha_n}$ è una collezione di variabili casuali indipendenti, allora $X_{n+1}$ è condizionalmente indipendente da $X_0, \ldots, X_{n-1}$ se $X_n$ è noto. Se, inoltre, le $\alpha_n$ sono identicamente distribuite, allora ${X_n}$ è omogenea.
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Queueing Theory}
+    Lo spazio degli stati è $\N$ e la matrice di transizione è
+    \begin{equation*}
+        P = \begin{pmatrix}
+            q_0 + q_1 & q_2 & q_3 & q_4 & \ldots \\
+            q_0 & q_1 & q_2 & q_3 & \ddots \\
+            \vdots & q_0 & q_1 & q_2 & \ddots \\
+            0 &  & \ddots & \ddots & \ddots
+        \end{pmatrix}
+    \end{equation*}
+    \begin{block}{}
+        \begin{itemize}
+            \item [$q_i$] è probabilità $P[\alpha=i]$ che $i$ nuovi clienti che entrino in coda durante un intervallo di un'unità di tempo
+            \item [$\alpha$] denota ognuna delle possibili distribuzioni di $\alpha_n$ identicamente distribuite.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Queueing Theory}
+    Le catene di Markov aventi matrice di transizione della forma
+    \begin{equation*}
+        P = \begin{pmatrix}
+            B1 & B_2 & B_3 & B_4 & \ldots \\
+            A_0 & A_1 & A_2 & A_3 & \ddots \\
+                & A_0 & A_1 & A_2 & \ddots \\
+            0   &     & \ddots & \ddots & \ddots
+        \end{pmatrix}
+    \end{equation*}
+    \noindent dove $A_i, B_{i+1}, i \geq 0$ sono matrici non negative di dimensione $k \times k$, sono dette M/G/1-type Markov Chains
+\end{frame}
+
+\begin{frame}
+    \frametitle{Obiettivi del paper}
+    Nuovo approccio per migliorare i modelli di coda utilizzando server secondari temporanei reclutati tra
+    \begin{block}{}
+            \begin{itemize}
+                \item Server secondari disponibili solo temporaneamente e servono gruppi di diversa dimensione
+                \item Dopo aver servito un gruppo, i server secondari lasciano il sistema
+            \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Obiettivi del paper}
+    Il paper analizza anche altri approcci di modelli di coda con server secondari presenti in letteratura, ma si concentra su due caratteristiche che sono intrinseche in alcuni sistemi del mondo reale e non sono state studiate in passato:
+    \begin{block}{}
+    \begin{itemize}
+        \item Server secondari assegnati ad un gruppo e offrono i servizi uno alla volta
+        \item Con probabilità, un cliente servito da un server secondario diventa insoddisfatto e torna al sistema principale per ottenere un nuovo servizio
+    \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Modello Matematico}
+
+\begin{frame}
+    \frametitle{Markovian arrival process (MAP)}
+    \begin{itemize}
+        \item Si considera un sistema di coda a singolo server con arrivi secondo un processo di arrivo markoviano (MAP) con matrici di parametro di ordine $m$.
+        \item Il MAP generalizza processi puntiformi noti come Poisson, Poisson interrotto e rinnovamenti di tipo fase.
+        \item MAP è ideale per situazioni in cui può essere presente una correlazione nei tempi tra gli arrivi.
+        \item L'uso di MAP semplifica l'analisi e ne rende più facile la comprensione grazie alla notazione semplice e all'utilizzo del formalismo delle matrici.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Caratterizzazione del MAP}
+    \begin{itemize}
+        \item Il generatore irriducibile del processo di arrivo markoviano (MAP) è dato dalla somma delle matrici di parametro $D_0$ e $D_1$ di ordine m.
+        \item La matrice $D_0$ governa le transizioni del generatore sottostante che non producono arrivi, mentre la matrice $D_1$ governa quelle transizioni corrispondenti agli arrivi nel sistema.
+    \end{itemize}
+    \begin{block}{}
+        L'invariante di probabilità $\delta$ soddisfa l'equazione
+        $$\delta (D_0 + D_1) = \textbf{0} \qquad \delta e = 1$$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Proprietà del MAP}
+        \begin{block}{Rate medio di arrivi $(\lambda)$}
+            $$ \lambda = \delta D_1 e$$
+        \end{block}
+        \begin{block}{Varianza degli tempi interni di arrivo $(\sigma^2)$}
+            $$ \sigma^2 = \frac{2}{\lambda} \delta (-D_0)^{-1} e - \frac{1}{\lambda^2}$$
+        \end{block}
+        \begin{block}{Correlazione $(\rho_c)$ tra due successivi tempi interni di arrivo}
+            $$ \rho_c = \frac{\lambda \delta (-D_0)^{-1} D_1 (-D_0)^{-1} e - 1}{2 \lambda \delta (-D_0)^{-1} e - 1}$$
+        \end{block}
+\end{frame}
+
+\begin{frame}{Modello di coda con server principale e secondario}
+    Il sistema ha un singolo server che offre servizi in modo FCFS.
+    \begin{itemize}
+        \item Il server principale offre servizi esponenziali con parametro $\mu_1$.
+        \item  Con probabilità $p$, un cliente servito può essere reclutato per diventare un server secondario, che offre servizi ai clienti in attesa del sistema.
+        \item I tempi di servizio del server secondario sono esponenziali con parametro $\mu_2$.
+    \end{itemize}
+    \begin{block}{Achtung!}
+        Un cliente insoddisfatto dal servizio ricevuto dal server secondario potrebbe richiedere di essere servito di nuovo con probabilità $\nu$.
+    \end{block}
+\end{frame}
+
+
+\begin{frame}{Modello di coda con server principale e secondario}
+    Il sistema può avere al massimo due server in qualsiasi momento.
+    \begin{itemize}
+        \item Il server secondario sarà assegnato a un gruppo di $i$ clienti dove $i = \min \{\text{numero nella coda}, L\}$, ed $L$ è un pre-determinato positivo finito intero.
+        \item I clienti insoddisfatti sono reinseriti nel sistema. Quando il server secondario ha finito di servire tutti i clienti assegnati, viene rilasciato dal sistema.
+    \end{itemize}
+    \begin{block}{Edge case}
+        Il caso in cui $\nu = 1$ non è interessante poiché ogni cliente servito da un server secondario viene reinserito nel sistema e l'assunzione di server secondari rallenta solo il sistema nell'offrire servizi.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Struttura del sistema}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{hVQg024.png}
+        \caption{Immagine da [1]}
+        \label{fig:diagramma_di_stato}
+    \end{figure}
+\end{frame}
+
+\section{Studio del modello di coda in stato stazionario}
+
+\begin{frame}
+    \frametitle{Due approcci possibili}
+
+    \begin{block}{QDB}
+        Primo processo che analizzeremo in  questa sezione: un caso particolare delle catena di markov a tempo continuo (CTMC)
+    \end{block}
+
+    \begin{block}{GI/M/1}
+        Secondo processo che analizzeremo nella sezione successiva
+    \end{block}
+
+\end{frame}
+
+\subsection{QDB}
+
+\begin{frame}
+    \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
+    Al tempo $t\geq 0$, indichiamo:
+    \begin{itemize}
+        \item $i_t\geq 0$ il numero di clienti nel sistema
+        \item $n_t\in\{0,\ldots,\min(i_t,L)\}$ il numero di clienti in servizio al server secondario
+        \item $\xi_t=1,\ldots,m$ lo stato del processo sottostante del MAP che descrive gli arrivi dei clienti
+    \end{itemize}
+    \begin{block}{}
+        Allora, il processo stocastico $\{\zeta_t=(i_t,n_t,\xi_t),,t\geq 0\}$ che descrive il comportamento del modello in esame è un CTMC regolare e irriducibile.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Generatore infinitesimale del processo QBD}
+    Enumerando gli stati del CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico e indicando con $i$ il livello, per $i\geq 0$, l'insieme di stati come
+    $$\{(i,n,k):0\leq n\leq \min(i,L),,1\leq k\leq m\}$$
+    il generatore (infinitesimale), $Q$, di questo CTMC è dato dal seguente teorema
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
+    \begin{theorem}
+        Il generatore infinitesimale $Q$ del processo stocastico CTMC $\{\zeta_t,,t\geq 0\}$ ha una struttura a blocchi tridiagonale come segue:
+        \begin{equation*}
+            Q =
+            \begin{pmatrix}
+                Q_{0,0} & Q_{0,1} & 0 & 0 & \dots & 0 & 0& 0 & 0 & \dots \\
+                Q_{1,0} & Q_{1,1} & Q_{1,2} & 0 & \dots & 0 & 0 & 0 & 0 & \dots \\
+                0 & Q_{2,1} & Q_{2,2} & Q_{2,3} & \dots & 0 & 0 & 0 & 0 & \dots \\
+                \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots \\
+                0 & 0 & 0 & 0 & \dots & Q_{L,L-1} & Q_{L,L} & Q^+& 0 & \ddots \\
+                0 & 0 & 0 & 0 & \dots & 0 & Q^- & Q^0 & Q^+ & \dots \\
+                0 & 0 & 0 & 0 & \dots & 0 & 0 & Q^- & Q^0 & Q^+ \\
+                \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots
+            \end{pmatrix}
+        \end{equation*}
+    \end{theorem}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
+    Dove i blocchi $Q_{i,i}$ sono definiti come segue:
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.9\textwidth]{T9RIVqa.png}
+    \end{figure}
+\end{frame}
+
+\subsubsection{Condizione di ergodicità del processo QBD}
+
+\begin{frame}
+    \frametitle{Condizione di ergodicità del processo QBD}
+    \begin{theorem}
+        Il processo stocastico CTMC $\{\zeta_t,,t\geq 0\}$ è ergodico se e solo se vale la seguente disuguaglianza:
+        \begin{equation*}\label{eq:ergodicity}
+            \lambda < \mu_1 + \mu_2(1 - \nu) \frac{L(1-q)\mu_1}{L(1-q)\mu_1 + \mu_2}
+        \end{equation*}
+    \end{theorem}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Dimostrazione del teorema}
+    \begin{block}{Dimostrazione}
+        Il criterio per l'ergodicità del QBD con il generatore di forma data come nel teorema precedente soddisfa l'ineguaglianza:
+        \begin{equation*}
+            y Q^- e > y Q^+e
+        \end{equation*}
+        dove il vettore $y$ è l'unica soluzione del sistema
+        \begin{equation*}
+            y(Q^- + Q^0 + Q^+) = \textbf{0}, \qquad ye = 1
+        \end{equation*}
+
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{}
+    \begin{block}{Dimostrazione}
+        Si può inoltre verificare facilmente che
+        \begin{equation*}\label{eq:bigotimes}
+            Q^- + Q^0 + Q^+ = I_{L+1} \otimes (D_0 + D_1) + S \otimes I_{m}
+        \end{equation*}
+        dove
+        \begin{equation*}
+            S =
+            \begin{pmatrix}
+                -\mu_1 (1-q) & 0 & 0 & \dots & 0 \mu_1(1-q) \\
+                \mu_2 & -\mu_2 & 0 & \dots & 0 & 0 \\
+                0 & \mu_2 & -\mu_2 & \dots & 0 & 0 \\
+                \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+                0 & 0 & 0 & \dots & \mu_2 & -\mu_2 \\
+            \end{pmatrix}
+        \end{equation*}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{}
+    \begin{block}{Dimostrazione}
+            dove usando le regole del mixed product per il prodotto di Kronecker, e ricordando che
+            $$ \delta(D_0 + D_1) = 0, \qquad \delta e = 1 $$
+            si verifica facilmente caratteristiche
+            $$ y = x \otimes \delta $$
+            dove $x$ è soluzione del sistema
+            $$xS = 0, \qquad xe = 1 $$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{}
+    \begin{block}{Dimostrazione}
+        per sostituzione diretta, si verifica facilmente che le componenti del vettore $x = (x_0, x_1, ... , x_L)$, corrispondenti alle uniche soluzioni del sistema visto prima, sono date da
+        \begin{equation*}
+            x_0 = \frac{\mu_2}{L(1-q)\mu_1 + \mu_2}, \qquad x_i = \frac{\mu_1(1-q)}{L(1-q)\mu_1 + \mu_2}, \qquad i = 1, ..., L
+        \end{equation*}
+        La tesi segue delle equazioni viste in precedenza assieme alla definizione di $\lambda$.
+        \qed
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Osservazioni sulla dimostrazione}
+    \begin{block}{Osservazione 1}
+        \begin{itemize}
+            \item La condizione di ergodicità richiede che il tasso di arrivo dei clienti per unità di tempo debba essere inferiore al tasso di servizio che i clienti ricevono per unità di tempo quando il sistema è sovraccarico.
+            \item Il tasso di servizio medio totale nel modello di coda è dato dalla somma del tasso di servizio fornito dal server principale e del tasso di servizio fornito dal server secondario.
+        \end{itemize}
+        Possiamo esprimere il tasso di servizio medio totale come segue:
+        $$\mu = \mu_1 + \mu_2(1 - \nu) \frac{L(1-q)\mu_1}{L(1-q)\mu_1 + \mu_2}$$
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Osservazioni sulla dimostrazione}
+    \begin{block}{Osservazione 2}
+        Calcoliamo la probabilità $x_0$ che il secondo server non sia presente nel sistema in un qualsiasi momento in cui il sistema è sovraccarico.
+
+        \begin{itemize}
+            \item  Quando il sistema attiva un server secondario la durata media del server secondario continuamente presente nel sistema è data da $\frac{L}{\mu_2}$. Pertanto, abbiamo:
+            \begin{equation*}
+                x_0  = \frac{\frac{1}{\mu_1(1-q)}}{\frac{1}{\mu_1(1-q)} + \frac{L}{\mu_2}} = \frac{\mu_2}{L(1-q)\mu_1 + \mu_2}
+            \end{equation*}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsubsection{Calcolo della distribuzione stazionaria del processo QDB}
+
+\begin{frame}
+    \frametitle{Probabilità stazionarie}
+    Sotto l'assunzione che la condizione di ergodicità sia valida, esistono le seguenti probabilità stazionarie degli stati del CTMC $\{\zeta_t, t \geq 0\}$:
+    $$\pi(i,n,\zeta) = \lim_{t \to \infty} P\{i_t = i, n_t = n, \zeta_t = \zeta\}, ~ i \geq 0$$
+    % $$n \in \{0, 1, \dots , \min\{i,L\}\}, \quad \zeta \in \{0, \dots, n\}$$
+    Consideriamo i vettori riga delle probabilità di stato stazionario $\pi_i$ come segue
+    \begin{block}{}
+        $$\pi(i,n) = (\pi(i,n,1), ..., \pi(i,n,m))$$
+        $$\pi_i = (\pi(i,0), ..., \pi(i, \min \{i,L\})), \quad i \geq 0$$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Probabilità stazionarie}
+    Sappiamo che i vettori di probabilità stazionari $\pi_i, i \geq 0$, soddisfano il sistema di equazioni algebriche lineari (equazioni di equilibrio):
+    $$(\pi_0, \pi_1, \pi_, \dots)Q = 0 \qquad (\pi_0, \pi_1, \pi_, \dots)e = 1$$
+    dove $Q$ è la matrice di transizione del CTMC $\{\zeta_t, t \geq 0\}$ e $e$ è il vettore colonna di tutti gli elementi $1$
+\end{frame}
+
+% La soluzione del problema di calcolo della distribuzione stazionaria di una QBD indipendente dal livello è ben nota; si veda [37]. Per i livelli in cui le transizioni della QBD non dipendono dal livello, i vettori di probabilità stazionaria sono trovati in forma matriciale geometrica. I vettori di probabilità stazionaria dei livelli di confine, in cui le transizioni della QBD dipendono dal livello, sono quindi direttamente trovati come soluzione del sistema di equazioni algebriche lineari. Tuttavia, se il numero di livelli di confine è grande (cosa che accade nel nostro modello se $L$ è grande), questo sistema ha una grande dimensione
+
+\begin{frame}
+    \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
+    \begin{block}{}
+            Vediamo un algoritmo per risolvere il sistema infinito di equazioni di equilibrio che sfrutta la struttura tridiagonale a blocchi ma dipendente dal livello del generatore per i livelli minori di $L + 1$.
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
+    \begin{theorem}
+        I vettori $\pi_i, i \geq 0$, sono trovati come soluzione del sistema di equazioni algebriche lineari:
+        \begin{equation*}
+            \pi_i = \alpha_i \big( \sum_{l=0}^\infty \alpha_l e \big)^{-1}, \qquad i \geq 0
+        \end{equation*}
+        dove il vettore $\alpha_0$ è calcolato come l'unica soluzione del sistema di equazioni
+        \begin{equation*}
+            \alpha_0(Q_{0,0} + Q_{0,1}G_0) = 0, \qquad \alpha_0e = 1
+        \end{equation*}
+        ed i vettori $\alpha_i, i \geq 1$, sono definiti come
+        \begin{equation*}
+            \alpha_i = \alpha_0 \prod_{l=1}^i R_l, \qquad i \geq 1
+        \end{equation*}
+    \end{theorem}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
+    \begin{theorem}
+        Altrimenti tramite la formula ricorsiva
+        \begin{equation*}\label{eq:rec-alpha}
+            \alpha_i = \alpha_{i-1} R_i, \qquad i \geq 1
+        \end{equation*}
+        dove
+        \begin{equation*}
+            R =
+            \begin{cases}
+                -Q_{i-1,i}(Q_{i,i} + Q_{i,i+1}G_i)^{-1}Q & 1 \leq i \leq L-1 \\
+                -Q_{L-1,L}(Q_{L,L} + Q^+G)^{-1} & i = L \\
+                -Q^+(Q^0 + Q^+G)^{-1} = R & i>L
+            \end{cases}
+        \end{equation*}
+    \end{theorem}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
+    \begin{theorem}
+        Le matrici stocastiche $G_i$ sono calcolate utilizzando la seguente formula ricorsiva all'indietro:
+                $$G_L = G$$
+                $$G_L-1 = -(Q_{L,L} + Q^+G_L)^{-1}Q_{L,L-1}$$
+                $$G_i = -(Q_{i+1,i+1} + Q_{i+1,i+2}G_{i+1})^{-1}Q_{i+1,i}, \qquad i = L-2, L-3, \dots, 0$$
+        dove la matrice $G$ è la minima soluzione non negativa dell'equazione quadratica matriciale
+        \begin{equation*}
+            Q^+G^2 + Q^0G + Q^- = 0
+        \end{equation*}
+    \end{theorem}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
+    \begin{itemize}
+        \item L'algoritmo proposto è una modifica dell'algoritmo per il calcolo della distribuzione stazionaria del CTMC asintoticamente quasi-Toeplitz.
+        \item Utilizzando la ricorsione di vettori anziché quella di matrici si ha una significativa riduzione della memoria del computer e del tempo di esecuzione.
+        \item Le inverse delle matrici utilizzate nell'algoritmo sono sub-generatori irriducibili e semi-stabili, il che rende stabile l'implementazione numerica dell'algoritmo.
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Approccio G1/M/1}
+
+
+\begin{frame}
+    \frametitle{Code di tipo GI/M/1}
+    \begin{block}{}
+            Definiamo come prima cosa lo spazio degli stati $\Omega$ del CTMC come:
+            $$\Omega = \{ (i,j,k) ~ : ~ i \geq 0, 0 \leq j \leq K, 1 \leq k \leq m \}$$
+    \end{block}
+    \begin{block}{}
+        Definiamo il livello
+        $$\textbf{i} = \{(i, j, k) : 0 \leq j \leq L, 1 \leq k \leq m\} = \{(\textbf{i}, 0), \dots, (\textbf{i}, L)\}, i \geq 0$$
+       \begin{itemize}
+        \item il livello $(\textbf{i},\textbf{j})$ indica che il server principale è occupato, ci sono $i-1$ clienti in attesa nella coda principale; il server secondario è occupato e il processo di arrivo si trova in varie fasi
+        \item  Il livello $(\textbf{0},\textbf{0})$ corrisponde al sistema inattivo con il processo MAP in una delle $m$ fasi.
+       \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Il generatore del CTMC}
+    Il generatore $\widetilde{Q}$ della CTMC che governa il sistema in studio è:
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{Isy9B7s.png}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Il generatore del CTMC}
+    Dove abbiamo:
+    \begin{equation*}
+        B_0 =
+        \begin{pmatrix}
+            D_0 & & & & \\
+            \widetilde{\nu}\mu_2 I & D_0 - \mu_2 I & & & \\
+            & \widetilde{\nu}\mu_2 I & D_0 - \mu_2 I & & \\
+            & & \ddots & \ddots & \\
+            & & & \widetilde{\nu}\mu_2 I & D_0 - \mu_2 I
+        \end{pmatrix}
+    \end{equation*}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Il generatore del CTMC}
+    Dove abbiamo:
+    \begin{equation*}
+        \begin{split}
+            A_0 &=
+            \begin{pmatrix}
+                D_1 & & & & \\
+                \nu\mu_2 I & D_1 & & & \\
+                & \nu \mu_2 I & D_1 & & \\
+                & & \ddots & \ddots & \\
+                & & & \nu \mu_2 I & D_1
+            \end{pmatrix} \\
+            A_1 &= B_0 -\mu_1 I \\
+            A_2 & = \mu_1 \Delta(q,1, \dots, 1) \\
+            B_1 &= \mu_1 I \\
+            B_r &= \rho \mu_1 (e_r^T \otimes e(L+1)) \qquad 2 \leq r \leq L+1 \\
+            A_{L+2} &= B_{L+1}
+        \end{split}
+    \end{equation*}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Proprietà delle queue di tipo GI/M/1}
+    \begin{block}{Proprietà 1}
+        Sia
+        $$\widetilde{y} = (\widetilde{y_0}, \dots, \widetilde{y_{L}})$$
+        il vettore invariante di $\displaystyle A = \sum_{i=0}^{L+2} A_i$. Allora:
+            $$ \widetilde{y_0} = \delta(\mu_2I - D_0 - D_1)[\mu_2U + L\rho\mu_1 I - D_0 - D_1]^{-1} $$
+            $$ \widetilde{y_r} = \rho \mu_1 \pi_0(\mu_2I - D_0 - D_1)^{-1}, \qquad 1 \leq r \leq L $$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Proprietà delle queue di tipo GI/M/1}
+    \begin{block}{Proprietà 2}
+        La condizione di stabilità
+        $$ \widetilde{y} A_0 e < \widetilde{y} \sum_{i=1}^{L+2}(i-1)A_i e $$
+        si riduce a:
+        $$ \lambda < \mu_1 + \mu_2(1 - \nu) \frac{L(1-q)\mu_1}{L(1-q)\mu_1 + \mu_2}  $$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Proprietà delle queue di tipo GI/M/1}
+    \begin{block}{Proprietà 3}
+        Data $R$ la matrice di rate, soddisfa l'equazione matriciale non lineare data da:
+        $$ R^{L+2} A_{L+2} + R^2A_2 + RA_1 + A_0 = 0 $$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Proprietà delle queue di tipo GI/M/1}
+    \begin{block}{Proprietà 4}
+        Indicando con $\widetilde{\pi}$ il vettore di probabilità in stato stazionario del generatore $\widetilde{Q}$ come visto prima, otteniamo qui la soluzione matrice-geometrica classica:
+        $$ \widetilde{\pi}_i = \widetilde{\pi}_0R^i, \qquad i \geq 1 $$
+        dove $\widetilde{\pi}_0$ è ottenuto risolvendo il seguente sistema di equazioni lineari:
+        $$ \widetilde{\pi}_0\Bigg[ \sum_{i=0}^{L+1} R^iB_i \Bigg] = 0, \qquad \widetilde{\pi}_0e = 1 $$
+    \end{block}
+\end{frame}
+
+
+\section{Risultati Numerici}
+\begin{frame}
+    \frametitle{Introduzione ai risultati numerici}
+    Vedremo 3 elementi illustrativi utilizzando 5 processi di arrivo. In particolare prendiamo i 5 MAP come
+    \begin{block}{ERL}
+        Erlang di ordine 5 con parametro 2.5 in ciascuno dei 5 stati. Notare che qui abbiamo $\lambda = 0.5, \sigma = 0.899427$ e $\rho_c = 0$.
+    \end{block}
+    \begin{block}{EXP}
+        Un esponenziale con una frequenza di 0.5. Notare che qui abbiamo $\lambda = 0.5, \sigma = 2$ e $\rho_c = 0$.
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{}
+    \begin{block}{HEX}
+        Distribuzione iper-esponenziale con una probabilità di mixing data da (0.5, 0.3, 0.15, 0.04, 0.01) con i corrispondenti tassi della distribuzione esponenziale pari a (1.09, 0.545, 0.2725, 0.13625, 0.068125). Qui abbiamo $\lambda = 0.5, \sigma = 3.3942$ e $\rho_c = 0$.
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{}
+    \begin{block}{NCR}
+        MAP negativamente correlato, con matrici di rappresentazione:
+        \begin{equation*}
+            D_0 =
+            \begin{pmatrix}
+                -1.125 & 0.125 & 0 & 0 & 0 \\
+                0 & -1.125 & 0.125 & 0 & 0 \\
+                0 & 0 & -1.125 & 0.125 & 0 \\
+                0 & 0 & 0 & -0.125 & 0 \\
+                0 & 0 & 0 & 0 & -2.25
+            \end{pmatrix}
+        \end{equation*}
+        \begin{equation*}
+            D_1 =
+            \begin{pmatrix}
+                0 & 0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 & 0 \\
+                0.01125 & 0 & 0 & 0 & 1.11375 \\
+                2.2275 & 0 & 0 & 0 & 0.0225
+            \end{pmatrix}
+        \end{equation*}
+        dove abbiamo $\lambda = 0.5, \sigma = 2.02454$ e $\rho_c =  -0.57855$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{}
+    \begin{block}{PCR}
+        MAP positivamente correlato, con matrici di rappresentazione:
+        \begin{equation*}
+            D_0 =
+            \begin{pmatrix}
+                -1.125 & 0.125 & 0 & 0 & 0 \\
+                0 & -1.125 & 0.125 & 0 & 0 \\
+                0 & 0 & -1.125 & 0.125 & 0 \\
+                0 & 0 & 0 & -0.125 & 0 \\
+                0 & 0 & 0 & 0 & -2.25
+            \end{pmatrix}
+        \end{equation*}
+        \begin{equation*}
+            D_1 =
+            \begin{pmatrix}
+                0 & 0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 & 0 \\
+                1.11375 & 0 & 0 & 0 & 0.01125 \\
+                0.0225 & 0 & 0 & 0 & 2.2275
+            \end{pmatrix}
+        \end{equation*}
+        dove abbiamo $\lambda = 0.5, \sigma = 2.02454$ e $\rho_c =  -0.57855$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Introduzione ai risultati numerici}
+    \begin{block}{Osservazioni}
+        \begin{itemize}
+            \item Le cinque MAP sopra riportate sono qualitativamente diverse.
+            \item Il processo di arrivo denominato PCR è ideale per situazioni di arrivi altamente irregolari.
+            \item La correlazione positiva nel processo PCR ha un impatto significativo e la variabilità nei tempi tra gli arrivi è stata ben documentata in letteratura.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    Fissiamo $\mu_1=1$, $\mu_2=0.5$, $q=0.5$, e $\nu=0.4$, e variamo $L$ da 1 a 30.
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.7\textwidth]{gtHnIzQ.png}
+        \caption{Impatto di $L$ sul numero medio di clienti nel sistema $L_{system}$ per diversi MAPs}
+        \label{fig:1}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{block}{$L_{\mathrm{sec}}$}
+        Definiamo $L_{\mathrm{sec}}$ come il numero medio di clienti nel sistema con server secondari ad un momento arbitrario come:
+        $$ L_{\mathrm{sec}} = \sum_{i=1}^{\infty} \sum_{n=1}^{\min\{i,L\}} n \pi (i,n) e $$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+        \begin{itemize}
+            \item La figura mostra che PCR ha un alto numero medio di clienti nel sistema rispetto ad altri processi di arrivo.
+            \item $L$ aumenta il numero medio di clienti nel sistema per i primi quattro MAP, ma per PCR il trend non è crescente a causa della correlazione positiva.
+            \item L'alta $L$ aumenta la probabilità di avere più clienti nel sistema, soprattutto per i primi quattro MAP.
+            \item Tuttavia, per gli arrivi PCR, $L$ diminuisce il numero medio di clienti nel sistema perché i server secondari aiutano a ripulire la coda.
+        \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Tcjl81t.png}
+        \caption{Dipendenza del numero medio di clienti con il server secondario $L_{\mathrm{sec}}$ al variare di $L$ per diversi MAPs}
+        \label{fig:2}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+        \begin{itemize}
+            \item $L_{\mathrm{sec}}$ aumenta all'aumentare di L, come previsto.
+            \item Il valore di $L_{\mathrm{sec}}$ è elevato per PCR e solo per valori piccoli di L è inferiore per ERL-NCR.
+            \item L'alta irregolarità degli arrivi nel processo PCR causa la fame del sistema, mentre una maggiore varianza implica un grande numero di clienti nel sistema per ERL-HEX.
+        \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{pSUZiNk.png}
+        \caption{Dipendenza della probabilità $P_{\mathrm{idle-system}}$ rispetto ad $L$ che il sistema sia in idle ad un momento arbitrario, per diversi MAPs}
+        \label{fig:3}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+        \begin{block}{$P_{\mathrm{idle-system}}$}
+            Definiamo la probabilità che il sistema sia in equilibrio ad un momento arbitrario come:
+            $$  P_{\mathrm{idle-system}} = \pi_0 e $$
+        \end{block}
+        \begin{itemize}
+            \item Esiste una grande differenza nella misura a seconda dei diversi MAPs utilizzati.
+            \item Il valore ottimale di $L$ dipende dall'obiettivo: ad esempio, per il processo di arrivo PCR, il valore ottimale di $L$ è $16$ se si cerca di minimizzare $L_{\mathrm{system}}$, ma è 6 se si massimizza $P_{\mathrm{idle-system}}$.
+        \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{VrxLKYI.png}
+        \caption{Dipendenza della probabilità $P_{\mathrm{idle-busy}}$ rispetto ad $L$ che il main server sia in idle quando il server secondario è in occupato, per diversi MAPs}
+        \label{fig:4}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{EZp90oP.png}
+        \caption{Dipendenza della probabilità $P_{\mathrm{busy-idle}}$ rispetto ad $L$ che il main server sia occupato quando il server secondario è in idle, per diversi MAPs}
+        \label{fig:5}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{block}{$P_{\mathrm{idle-busy}}$}
+        Definiamo la probabilità che il main server sia in idle quando il server secondario è occupato come:
+        $$ P_{\mathrm{idle-busy}} = \sum_{n=1}^{L} \pi(n,n) e $$
+    \end{block}
+    \begin{block}{$P_{\mathrm{busy-idle}}$}
+        Definiamo la probabilità che il main server sia occupato quando il server secondario è in idle come:
+        $$ P_{\mathrm{busy-idle}} = \sum_{i=0}^{\infty} \pi(i,0) e $$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{itemize}
+        \item L'obiettivo è valutare l'impatto dei parametri $q$ e $\nu$ sulla prestazione del sistema.
+        \item Fissiamo il valore di $L$ a $10$ e i tassi di servizio $\mu_1$ e $\mu_2$ a $1$ e $0.5$.
+        \item Si variano i valori di $q$ e $\nu$ da $0$ a $1$ con passo $0.05$ e si analizza l'impatto sulle misure di prestazione del sistema.
+    \end{itemize}
+    \begin{block}{}
+        In questo esempio ci concentriamo sul processo di arrivo PCR, la cui scelta è basata sul comportamento di questo processo sulle misure evidenziato nel primo esempio illustrativo
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{qUQVrEZ.png}
+        \caption{Dipendenza del numero medio di clienti nel sistema $L_{\mathrm{system}}$ rispetto a $q$ e $\nu$}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{itemize}
+        \item L'analisi mostra che il valore di $L_\mathrm{system}$ è minimo a $7.9328$ quando $q$ e $\nu$ sono entrambi uguali a $0$.
+        \item Aumentando $q$ o $\nu$, il valore di $L_\mathrm{system}$ aumenta, con un aumento più veloce quando uno o entrambi si avvicinano a $1$.
+        \item Quando $q=1$, il sistema diventa un modello MAP/M/1 classico e il valore di $L_\mathrm{system}$ diventa $22.30425$ per tutti i valori di $\nu$.
+        \item L'uso di un server secondario riduce il numero medio di clienti nel sistema di oltre il $40\%,$ e il punto di interruzione per il modello classico è $\nu^* \sim 0.985$.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{itemize}
+        \item Si aumenta $\lambda$ del 50\% a 0.75 per testare l'importo della riduzione del numero medio di clienti nel sistema.
+        \item Mantenendo gli altri parametri costanti, si ottiene una riduzione superiore al 52,8\%.
+        \item Ciò suggerisce che l'aggiunta di un server secondario beneficia notevolmente l'aumento del carico del sistema anche con un tasso di insoddisfazione del cliente del 50\%.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{0uFWo7C.png}
+        \caption{ Dipendenza del numero medio di clienti nel sistema $L_{\mathrm{sec}}$ rispetto a $q$ e $\nu$ con $\lambda=0.75$}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{itemize}
+        \item La figura mostra come il numero medio di clienti con il server secondario $L_\mathrm{sec}$ dipenda dai parametri $q$ e $\nu$.
+        \item $L_\mathrm{sec}$ diminuisce significativamente quando $q$ si avvicina a $1$ e quando i clienti sono raramente reclutati per diventare server secondari.
+        \item $L_\mathrm{sec}$ ha il valore massimo quando $q$ è uguale a zero e $\nu$ è vicino a $1$, ma questo può creare ulteriore lavoro per il sistema e riflettersi negativamente sulla fornitura di servizi.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.8\textwidth]{3zlg6uj.png}
+        \caption{Dipendenza della probabilità $P_\mathrm{idle-system}$ che il sistema sia in idle ad un momento arbitrario rispetto a $q$ e $\nu$.}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Secondo esempio illustrativo}
+    \begin{itemize}
+        \item $P_\mathrm{idle-system}$ ha il valore minimo di $0.4445$ quando $\nu=1$ e $q=0$, il che è intuitivo poiché servire nuovamente i clienti dopo aver passato attraverso un server secondario mette un carico sul sistema.
+        \item $P_\mathrm{idle-system}$ aumenta quando $q$ aumenta e/o $\nu$ diminuisce, con un valore massimo di $0.5652$ ottenuto quando $q=0.65$ e $\nu=0$.
+        \item Nel sistema MAP/M/1 classico corrispondente, questa misura è $P_\mathrm{idle-system}=0.5$.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Terzo esempio illustrativo}
+    \begin{itemize}
+        \item In questo esempio, si analizza l'impatto della variazione dei tassi di servizio $\mu_1$ e $\mu_2$ quando tutti gli altri parametri sono fissati.
+        \item I parametri fissati sono $L=10$, $q=0.5$, $\nu=0.4$, e $\lambda=0.5$.
+        \item I tassi $\mu_1$ e $\mu_2$ vengono variati da $0.25$ a $2.0$ con incrementi di $0.05$, ma per soddisfare la condizione di ergodicità, il valore di $\mu_2$ viene limitato quando $\mu_1$ è piccolo.
+        \item Solo per $\mu_1\geq0.4$, il valore di $\mu_2$ può essere variato da $0.25$, come originariamente indicato
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Terzo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{9LBRzWR.png}
+        \caption{Dipendenza del numero medio di clienti nel sistema $L_{\mathrm{system}}$ rispetto a $\mu_1$ e $\mu_2$}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Terzo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{CBOSr9C.png}
+        \caption{Dipendenza del numero medio di clienti nel sistema $L_{\mathrm{system}}$ rispetto a $\mu_1$ e $\mu_2$}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Terzo esempio illustrativo}
+    \begin{itemize}
+        \item La condizione di ergodicità limita il valore di $\mu_2$ per valori piccoli di $\mu_1$.
+        \item Gran parte della superficie mostrata nella prima figura è piatta a causa della violazione della condizione di ergodicità.
+        \item La tendenza generale è che $L_{\text{system}}$ diminuisce quando aumenta $\mu_1$ o $\mu_2$ (per valori non piccoli di $\mu_1$).
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Terzo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{R1VGHAR.png}
+        \caption{Dipendenza del numero medio di clienti con server secondario $L_{\mathrm{sec}}$ rispetto a $\mu_1$ e $\mu_2$}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Terzo esempio illustrativo}
+
+    \begin{itemize}
+        \item Il valore massimo di $L_{sec}$ è di circa 5 quando $\mu_1$ e $\mu_2$ sono piccoli.
+        \item Con un aumento di $\mu_1$ e $\mu_2$, il valore di $L_{sec}$ diminuisce come ci si aspetterebbe.
+        \item Per valori piccoli di $\mu_1$, la diminuzione è significativa all'aumentare di $\mu_2$; per valori più grandi di $\mu_1$, notiamo un tasso insignificante di diminuzione in $L_{sec}$ con un aumento di $\mu_2$.
+    \end{itemize}
+
+
+\end{frame}
+
+
+\section{Conclusioni}
+
+\begin{frame}
+    \frametitle{Conclusioni}
+    \begin{itemize}
+        \item Il sistema di coda analizzato prevede la possibilità di reclutare un cliente già servito come server secondario per aiutare il server principale.
+        \item Il processo di arrivo dei clienti è stato modellizzato utilizzando un processo di punto Markoviano versatile, MAP.
+        \item È stata considerata la possibilità che i clienti insoddisfatti con il servizio fornito dal server secondario possano ritornare nel sistema.
+        \item L'analisi dello stato stazionario della catena di Markov multidimensionale ha permesso di ottenere risultati numerici utili per prendere decisioni manageriali.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Generalizzazione del modello}
+    \begin{itemize}
+        \item Si può effettuare il servizio fornito dal server secondario in gruppi.
+        \item Si può rilassare l'ipotesi di avere solo un server secondario e vedere l'impatto dell'aumento a 2.
+        \item Si possono incorporare diverse politiche di controllo, come la possibilità di reclutare molti server secondari con due tipi di clienti
+    \end{itemize}
+\end{frame}
+
+
+
+
+
+\end{document}
