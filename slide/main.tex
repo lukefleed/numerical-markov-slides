@@ -135,19 +135,19 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \section{Modello Matematico}
 
 \begin{frame}
-    \frametitle{Markovian arrival process (MAP)}
+    \frametitle{Markovian arrival process (\emph{MAP})}
     \begin{itemize}
-        \item Si considera un sistema di coda a singolo server con arrivi secondo un processo di arrivo markoviano (MAP) con matrici di parametro di ordine $m$.
-        \item Il MAP generalizza processi puntiformi noti come Poisson, Poisson interrotto e rinnovamenti di tipo fase.
-        \item MAP è ideale per situazioni in cui può essere presente una correlazione nei tempi tra gli arrivi.
-        \item L'uso di MAP semplifica l'analisi e ne rende più facile la comprensione grazie alla notazione semplice e all'utilizzo del formalismo delle matrici.
+        \item Si considera un sistema di coda a singolo server con arrivi secondo un processo di arrivo markoviano (\emph{MAP}) con matrici di parametro di ordine $m$.
+        \item Il \emph{MAP} generalizza processi puntiformi noti come Poisson, Poisson interrotto e rinnovamenti di tipo fase.
+        \item \emph{MAP} è ideale per situazioni in cui può essere presente una correlazione nei tempi tra gli arrivi.
+        \item L'uso di \emph{MAP} semplifica l'analisi e ne rende più facile la comprensione grazie alla notazione semplice e all'utilizzo del formalismo delle matrici.
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Caratterizzazione del MAP}
+    \frametitle{Caratterizzazione del \emph{MAP}}
     \begin{itemize}
-        \item Il generatore irriducibile del processo di arrivo markoviano (MAP) è dato dalla somma delle matrici di parametro $D_0$ e $D_1$ di ordine m.
+        \item Il generatore irriducibile del processo di arrivo markoviano (\emph{MAP}) è dato dalla somma delle matrici di parametro $D_0$ e $D_1$ di ordine m.
         \item La matrice $D_0$ governa le transizioni del generatore sottostante che non producono arrivi, mentre la matrice $D_1$ governa quelle transizioni corrispondenti agli arrivi nel sistema.
     \end{itemize}
     \begin{block}{}
@@ -158,7 +158,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 
 \begin{frame}
-    \frametitle{Proprietà del MAP}
+    \frametitle{Proprietà del \emph{MAP}}
         \begin{block}{Rate medio di arrivi $(\lambda)$}
             $$ \lambda = \delta D_1 e$$
         \end{block}
@@ -214,12 +214,54 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \end{block}
 
     \begin{block}{GI/M/1}
-        Secondo processo che analizzeremo nella sezione successiva
+        Una GI/M/1-type Markov chain assume che il tempo tra gli arrivi e il tempo di servizio dei clienti seguano una distribuzione generica, mentre è presente un solo server.
     \end{block}
 
 \end{frame}
 
 \subsection{QDB}
+
+
+\begin{frame}
+    \frametitle{Introduzione al QDB}
+    \begin{block}{}
+        Un \emph{quasi-death-birth process} (QDB) è un caso particolare di una catena di Markov a tempo continuo (CTMC) che può essere utilizzato per modellare certi tipi di sistemi di coda. Ci sono due tipi di eventi che possono verificarsi: eventi di morte e eventi di nascita.
+    \end{block}
+    \begin{itemize}
+        \item Un evento di morte avviene quando un cliente lascia il sistema (i.e finisce di essere servito e se ne va)
+        \item Un evento di nascita avviene quando un nuovo cliente entra nel sistema
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Introduzione al QDB}
+
+    \begin{block}{}
+        Imponendo le restrizioni di entrambi i tipi di code $M/G/1$ che delle $G/M/1$, si vietano transizioni di più di livello alla volta, ottenendo così un processo QDB.
+    \end{block}
+    La matrice di transizione di tale processo è definita come segue:
+    \begin{equation*}
+        P=
+        \begin{pmatrix}
+            B_0 & A_1 & & & 0 \\
+            A_{-1} & A_0 & A_1 & & \\
+            & A_{-1} & A_0 & A_1 & \\
+            & & A_{-1} & A_0 & \ddots \\
+            0 & & & \ddots & \ddots
+        \end{pmatrix}
+    \end{equation*}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Introduzione al QDB}
+    \begin{block}{Generalizzazione del QDB}
+        Si potrebbe pensare al QDB come un semplice lista lineare in evoluzione: ogni livello è un nodo nella lista ed il processo è autorizzato a muoversi da un nodo ad uno dei suoi due vicini.
+    \end{block}
+\end{frame}
+
 
 \begin{frame}
     \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
@@ -227,12 +269,36 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{itemize}
         \item $i_t\geq 0$ il numero di clienti nel sistema
         \item $n_t\in\{0,\ldots,\min(i_t,L)\}$ il numero di clienti in servizio al server secondario
-        \item $\xi_t=1,\ldots,m$ lo stato del processo sottostante del MAP che descrive gli arrivi dei clienti
+        \item $\xi_t=1,\ldots,m$ lo stato del processo sottostante del \emph{MAP} che descrive gli arrivi dei clienti
     \end{itemize}
     \begin{block}{}
         Allora, il processo stocastico $\{\zeta_t=(i_t,n_t,\xi_t),,t\geq 0\}$ che descrive il comportamento del modello in esame è un CTMC regolare e irriducibile.
     \end{block}
 \end{frame}
+
+
+\begin{frame}
+    \frametitle{Generatore infinitesimale del processo QBD}
+    \begin{block}{}
+        Il generatore (infinitesimale) di un processo QDB è una matrice quadrata infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo
+    \end{block}
+%    \begin{itemize}
+%     \item La matrice ha un numero infinito di righe e colonne, una per ogni possibile stato del sistema.
+%    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Generatore infinitesimale del processo QBD}
+    Le transizioni di un QDB sono di tre tipi:
+    \begin{itemize}
+        \item \textbf{Birth}: una nuova entità entra nel sistema.
+        \item \textbf{Deaths}: una entità lascia il sistema.
+        \item \textbf{No-change}: il numero di entità nel sistema non cambia.
+        % La probabilità di transizione tra uno stato i e uno stato j dipende dalla differenza tra i e j. In particolare, se j = i+1, la transizione è una birth, se j = i-1, la transizione è una death, altrimenti j = i e la transizione è una no-change.
+    \end{itemize}
+\end{frame}
+
 
 \begin{frame}
     \frametitle{Generatore infinitesimale del processo QBD}
@@ -246,7 +312,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
     \begin{theorem}
         Il generatore infinitesimale $Q$ del processo stocastico CTMC $\{\zeta_t,,t\geq 0\}$ ha una struttura a blocchi tridiagonale come segue:
-        \begin{equation*}
+        \small{\begin{equation*}
             Q =
             \begin{pmatrix}
                 Q_{0,0} & Q_{0,1} & 0 & 0 & \dots & 0 & 0& 0 & 0 & \dots \\
@@ -258,7 +324,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
                 0 & 0 & 0 & 0 & \dots & 0 & 0 & Q^- & Q^0 & Q^+ \\
                 \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \vdots & \ddots
             \end{pmatrix}
-        \end{equation*}
+        \end{equation*}}
     \end{theorem}
 \end{frame}
 
@@ -276,6 +342,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{Condizione di ergodicità del processo QBD}
+    Il seguente risultato stabilisce la condizione di ergodicità del processo QBD che governa il sistema in esame.
     \begin{theorem}
         Il processo stocastico CTMC $\{\zeta_t,,t\geq 0\}$ è ergodico se e solo se vale la seguente disuguaglianza:
         \begin{equation*}\label{eq:ergodicity}
@@ -303,7 +370,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{}
     \begin{block}{Dimostrazione}
-        Si può inoltre verificare facilmente che
+        Si può inoltre verificare che
         \begin{equation*}\label{eq:bigotimes}
             Q^- + Q^0 + Q^+ = I_{L+1} \otimes (D_0 + D_1) + S \otimes I_{m}
         \end{equation*}
@@ -326,7 +393,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{block}{Dimostrazione}
             dove usando le regole del mixed product per il prodotto di Kronecker, e ricordando che
             $$ \delta(D_0 + D_1) = 0, \qquad \delta e = 1 $$
-            si verifica facilmente caratteristiche
+            si verifica che
             $$ y = x \otimes \delta $$
             dove $x$ è soluzione del sistema
             $$xS = 0, \qquad xe = 1 $$
@@ -337,7 +404,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{}
     \begin{block}{Dimostrazione}
-        per sostituzione diretta, si verifica facilmente che le componenti del vettore $x = (x_0, x_1, ... , x_L)$, corrispondenti alle uniche soluzioni del sistema visto prima, sono date da
+        per sostituzione diretta, verifichiamo che le componenti del vettore $x = (x_0, x_1, ... , x_L)$, corrispondenti alle uniche soluzioni del sistema visto prima, sono date da
         \begin{equation*}
             x_0 = \frac{\mu_2}{L(1-q)\mu_1 + \mu_2}, \qquad x_i = \frac{\mu_1(1-q)}{L(1-q)\mu_1 + \mu_2}, \qquad i = 1, ..., L
         \end{equation*}
@@ -377,6 +444,16 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{Probabilità stazionarie}
+    \begin{block}{}
+        La distribuzione stazionaria di un processo QDB è la distribuzione di probabilità asintotica delle diverse configurazioni del sistema che si osservano nel lungo termine.
+        % In altre parole, la distribuzione stazionaria è la distribuzione di probabilità di trovare il sistema in uno stato particolare quando il tempo tende all'infinito.
+    \end{block}
+    In particolare, per un processo QDB con n stati, la distribuzione stazionaria è un vettore di probabilità $\pi = (\pi_1, \pi_2, ..., \pi_n)$, dove ogni $\pi_i$ rappresenta la probabilità di trovare il sistema nello stato $i$.
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Probabilità stazionarie}
     Sotto l'assunzione che la condizione di ergodicità sia valida, esistono le seguenti probabilità stazionarie degli stati del CTMC $\{\zeta_t, t \geq 0\}$:
     $$\pi(i,n,\zeta) = \lim_{t \to \infty} P\{i_t = i, n_t = n, \zeta_t = \zeta\}, ~ i \geq 0$$
     % $$n \in \{0, 1, \dots , \min\{i,L\}\}, \quad \zeta \in \{0, \dots, n\}$$
@@ -409,17 +486,17 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
     \begin{theorem}
         I vettori $\pi_i, i \geq 0$, sono trovati come soluzione del sistema di equazioni algebriche lineari:
-        \begin{equation*}
+        \small{\begin{equation*}
             \pi_i = \alpha_i \big( \sum_{l=0}^\infty \alpha_l e \big)^{-1}, \qquad i \geq 0
-        \end{equation*}
+        \end{equation*}}
         dove il vettore $\alpha_0$ è calcolato come l'unica soluzione del sistema di equazioni
-        \begin{equation*}
+        \small{\begin{equation*}
             \alpha_0(Q_{0,0} + Q_{0,1}G_0) = 0, \qquad \alpha_0e = 1
-        \end{equation*}
+        \end{equation*}}
         ed i vettori $\alpha_i, i \geq 1$, sono definiti come
-        \begin{equation*}
+        \small{\begin{equation*}
             \alpha_i = \alpha_0 \prod_{l=1}^i R_l, \qquad i \geq 1
-        \end{equation*}
+        \end{equation*}}
     \end{theorem}
 \end{frame}
 
@@ -462,7 +539,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
     \begin{itemize}
-        \item L'algoritmo proposto è una modifica dell'algoritmo per il calcolo della distribuzione stazionaria del CTMC asintoticamente quasi-Toeplitz.
+        \item L'algoritmo proposto è una modifica dell'algoritmo per il calcolo della distribuzione stazionaria di una CTMC asintotica quasi-Toeplitz.
         \item Utilizzando la ricorsione di vettori anziché quella di matrici si ha una significativa riduzione della memoria del computer e del tempo di esecuzione.
         \item Le inverse delle matrici utilizzate nell'algoritmo sono sub-generatori irriducibili e semi-stabili, il che rende stabile l'implementazione numerica dell'algoritmo.
     \end{itemize}
@@ -472,19 +549,33 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \subsection{Approccio G1/M/1}
 
 
+\begin{frame}{Introduzione alle code di tipo GI/M/1}
+\begin{block}{}
+        Le code di tipo GI/M/1 assumono che i tempi di arrivo e di servizio siano distribuiti secondo una distribuzione generale, ma la distribuzione del tempo di servizio è indipendente dal numero di clienti in coda.
+\end{block}
+\end{frame}
+
+
 \begin{frame}
     \frametitle{Code di tipo GI/M/1}
     \begin{block}{}
             Definiamo come prima cosa lo spazio degli stati $\Omega$ del CTMC come:
             $$\Omega = \{ (i,j,k) ~ : ~ i \geq 0, 0 \leq j \leq K, 1 \leq k \leq m \}$$
     \end{block}
-    \begin{block}{}
-        Definiamo il livello
-        $$\textbf{i} = \{(i, j, k) : 0 \leq j \leq L, 1 \leq k \leq m\} = \{(\textbf{i}, 0), \dots, (\textbf{i}, L)\}, i \geq 0$$
-       \begin{itemize}
-        \item il livello $(\textbf{i},\textbf{j})$ indica che il server principale è occupato, ci sono $i-1$ clienti in attesa nella coda principale; il server secondario è occupato e il processo di arrivo si trova in varie fasi
-        \item  Il livello $(\textbf{0},\textbf{0})$ corrisponde al sistema inattivo con il processo MAP in una delle $m$ fasi.
-       \end{itemize}
+    Definiamo il livello \textbf{i} come:
+    \begin{equation*}
+        \textbf{i} = \{(i, j, k) : 0 \leq j \leq L, 1 \leq k \leq m\} = \{(\textbf{i}, 0), \dots, (\textbf{i}, L)\}, \quad i \geq 0
+    \end{equation*}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Code di tipo GI/M/1}
+    \begin{block}{Osservazione}
+        \begin{itemize}
+            \item il livello $(\textbf{i},\textbf{j})$ indica che il server principale è occupato, ci sono $i-1$ clienti in attesa nella coda principale; il server secondario è occupato e il processo di arrivo si trova in varie fasi
+            \item  Il livello $(\textbf{0},\textbf{0})$ corrisponde al sistema inattivo con il processo \emph{MAP} in una delle $m$ fasi.
+        \end{itemize}
     \end{block}
 \end{frame}
 
@@ -540,6 +631,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{Proprietà delle queue di tipo GI/M/1}
+    Utilizzando i risultati per le code di tipo G1/M/1 in tempo continuo, si verificano le seguenti proprietà:
     \begin{block}{Proprietà 1}
         Sia
         $$\widetilde{y} = (\widetilde{y_0}, \dots, \widetilde{y_{L}})$$
@@ -555,7 +647,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{block}{Proprietà 2}
         La condizione di stabilità
         $$ \widetilde{y} A_0 e < \widetilde{y} \sum_{i=1}^{L+2}(i-1)A_i e $$
-        si riduce a:
+        si riduce alla disuguaglianza vista prima:
         $$ \lambda < \mu_1 + \mu_2(1 - \nu) \frac{L(1-q)\mu_1}{L(1-q)\mu_1 + \mu_2}  $$
     \end{block}
 \end{frame}
@@ -573,7 +665,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{Proprietà delle queue di tipo GI/M/1}
     \begin{block}{Proprietà 4}
-        Indicando con $\widetilde{\pi}$ il vettore di probabilità in stato stazionario del generatore $\widetilde{Q}$ come visto prima, otteniamo qui la soluzione matrice-geometrica classica:
+        Indicando con $\widetilde{\pi}$ il vettore di probabilità stazionario del generatore $\widetilde{Q}$ come visto prima, otteniamo qui la soluzione matriciale geometrica classica:
         $$ \widetilde{\pi}_i = \widetilde{\pi}_0R^i, \qquad i \geq 1 $$
         dove $\widetilde{\pi}_0$ è ottenuto risolvendo il seguente sistema di equazioni lineari:
         $$ \widetilde{\pi}_0\Bigg[ \sum_{i=0}^{L+1} R^iB_i \Bigg] = 0, \qquad \widetilde{\pi}_0e = 1 $$
@@ -584,19 +676,19 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \section{Risultati Numerici}
 \begin{frame}
     \frametitle{Introduzione ai risultati numerici}
-    Vedremo 3 elementi illustrativi utilizzando 5 processi di arrivo. In particolare prendiamo i 5 MAP come
-    \begin{block}{ERL}
-        Erlang di ordine 5 con parametro 2.5 in ciascuno dei 5 stati. Notare che qui abbiamo $\lambda = 0.5, \sigma = 0.899427$ e $\rho_c = 0$.
+    Vedremo 3 esempi illustrativi utilizzando 5 processi di arrivo. In particolare i 5 \emph{MAP} considerati sono:
+    \begin{block}{1. ERL}
+        Erlang di ordine 5 con parametro 2.5 in ciascuno dei 5 stati. Prendiamo poi $\lambda = 0.5, \sigma = 0.899427$ e $\rho_c = 0$.
     \end{block}
-    \begin{block}{EXP}
-        Un esponenziale con una frequenza di 0.5. Notare che qui abbiamo $\lambda = 0.5, \sigma = 2$ e $\rho_c = 0$.
+    \begin{block}{2. EXP}
+        Un esponenziale con una frequenza di 0.5. Prendiamo poi $\lambda = 0.5, \sigma = 2$ e $\rho_c = 0$.
     \end{block}
 \end{frame}
 
 
 \begin{frame}
     \frametitle{}
-    \begin{block}{HEX}
+    \begin{block}{3. HEX}
         Distribuzione iper-esponenziale con una probabilità di mixing data da (0.5, 0.3, 0.15, 0.04, 0.01) con i corrispondenti tassi della distribuzione esponenziale pari a (1.09, 0.545, 0.2725, 0.13625, 0.068125). Qui abbiamo $\lambda = 0.5, \sigma = 3.3942$ e $\rho_c = 0$.
     \end{block}
 \end{frame}
@@ -604,8 +696,8 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{}
-    \begin{block}{NCR}
-        MAP negativamente correlato, con matrici di rappresentazione:
+    \begin{block}{4. NCR}
+        \emph{MAP} negativamente correlato, con matrici di rappresentazione:
         \begin{equation*}
             D_0 =
             \begin{pmatrix}
@@ -633,8 +725,8 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{}
-    \begin{block}{PCR}
-        MAP positivamente correlato, con matrici di rappresentazione:
+    \begin{block}{5. PCR}
+        \emph{MAP} positivamente correlato, con matrici di rappresentazione:
         \begin{equation*}
             D_0 =
             \begin{pmatrix}
@@ -664,9 +756,8 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \frametitle{Introduzione ai risultati numerici}
     \begin{block}{Osservazioni}
         \begin{itemize}
-            \item Le cinque MAP sopra riportate sono qualitativamente diverse.
-            \item Il processo di arrivo denominato PCR è ideale per situazioni di arrivi altamente irregolari.
-            \item La correlazione positiva nel processo PCR ha un impatto significativo e la variabilità nei tempi tra gli arrivi è stata ben documentata in letteratura.
+            \item Le cinque \emph{MAP} sopra riportate sono qualitativamente diverse.
+            \item Il processo di arrivo \textbf{PCR} è ideale per situazioni di arrivi altamente irregolari con periodi di alta e bassa attività.
         \end{itemize}
     \end{block}
 \end{frame}
@@ -674,15 +765,11 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{Primo esempio illustrativo}
+    \begin{block}{Obiettivo}
+        Discutiamo l'impatto del parametro $L$ su alcune misure di performance del sistema per tutti e 5 i \emph{MAPs}
+    \end{block}
     Fissiamo $\mu_1=1$, $\mu_2=0.5$, $q=0.5$, e $\nu=0.4$, e variamo $L$ da 1 a 30.
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.7\textwidth]{gtHnIzQ.png}
-        \caption{Impatto di $L$ sul numero medio di clienti nel sistema $L_{system}$ per diversi MAPs}
-        \label{fig:1}
-    \end{figure}
 \end{frame}
-
 
 \begin{frame}
     \frametitle{Primo esempio illustrativo}
@@ -690,16 +777,30 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
         Definiamo $L_{\mathrm{sec}}$ come il numero medio di clienti nel sistema con server secondari ad un momento arbitrario come:
         $$ L_{\mathrm{sec}} = \sum_{i=1}^{\infty} \sum_{n=1}^{\min\{i,L\}} n \pi (i,n) e $$
     \end{block}
+    \begin{block}{$L_{\mathrm{system}}$}
+        Definiamo $L_{\mathrm{system}}$ come il numero medio di clienti nell'intero sistema come:
+        $$ L_{\mathrm{syste}} = \sum_{i=1}^{\infty} i \pi_i e $$
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.75\textwidth]{gtHnIzQ.png}
+        \caption{Impatto di $L$ sul numero medio di clienti nel sistema $L_{system}$ per diversi \emph{MAPs}}
+        \label{fig:1}
+    \end{figure}
 \end{frame}
 
 
 \begin{frame}
     \frametitle{Primo esempio illustrativo}
         \begin{itemize}
-            \item La figura mostra che PCR ha un alto numero medio di clienti nel sistema rispetto ad altri processi di arrivo.
-            \item $L$ aumenta il numero medio di clienti nel sistema per i primi quattro MAP, ma per PCR il trend non è crescente a causa della correlazione positiva.
-            \item L'alta $L$ aumenta la probabilità di avere più clienti nel sistema, soprattutto per i primi quattro MAP.
-            \item Tuttavia, per gli arrivi PCR, $L$ diminuisce il numero medio di clienti nel sistema perché i server secondari aiutano a ripulire la coda.
+            \item Il \textbf{PCR} ha un alto numero medio di clienti nel sistema rispetto ad altri processi di arrivo.
+            \item $L$ aumenta il numero medio di clienti nel sistema per i primi quattro \emph{MAP}, ma per il \textbf{PCR} il trend non è crescente a causa della correlazione positiva.
+            \item Alti valori di $L$ aumentano la probabilità di avere più clienti nel sistema, soprattutto per i primi quattro \emph{MAP}.
+            \item Per gli arrivi \textbf{PCR}, $L$ diminuisce il numero medio di clienti nel sistema perché i server secondari aiutano a ripulire la coda.
         \end{itemize}
 \end{frame}
 
@@ -709,7 +810,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.8\textwidth]{Tcjl81t.png}
-        \caption{Dipendenza del numero medio di clienti con il server secondario $L_{\mathrm{sec}}$ al variare di $L$ per diversi MAPs}
+        \caption{Dipendenza del numero medio di clienti con il server secondario $L_{\mathrm{sec}}$ al variare di $L$ per diversi \emph{MAPs}}
         \label{fig:2}
     \end{figure}
 \end{frame}
@@ -719,9 +820,18 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \frametitle{Primo esempio illustrativo}
         \begin{itemize}
             \item $L_{\mathrm{sec}}$ aumenta all'aumentare di L, come previsto.
-            \item Il valore di $L_{\mathrm{sec}}$ è elevato per PCR e solo per valori piccoli di L è inferiore per ERL-NCR.
-            \item L'alta irregolarità degli arrivi nel processo PCR causa la fame del sistema, mentre una maggiore varianza implica un grande numero di clienti nel sistema per ERL-HEX.
+            \item Il valore di $L_{\mathrm{sec}}$ è elevato per \textbf{PCR} e solo per valori piccoli di L è inferiore per \textbf{ERL-NCR}.
+            \item L'alta irregolarità degli arrivi nel processo \textbf{PCR} causa la "fame" del sistema, durante la quale solo il server primario è occupato offrendo servizi per la maggior parte dei clienti.
         \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{block}{$P_{\mathrm{idle-system}}$}
+        Definiamo la probabilità che il sistema sia in equilibrio ad un momento arbitrario come:
+        $$  P_{\mathrm{idle-system}} = \pi_0 e $$
+    \end{block}
 \end{frame}
 
 
@@ -730,7 +840,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.8\textwidth]{pSUZiNk.png}
-        \caption{Dipendenza della probabilità $P_{\mathrm{idle-system}}$ rispetto ad $L$ che il sistema sia in idle ad un momento arbitrario, per diversi MAPs}
+        \caption{Dipendenza della probabilità $P_{\mathrm{idle-system}}$ rispetto ad $L$ che il sistema sia in idle ad un momento arbitrario, per diversi \emph{MAPs}}
         \label{fig:3}
     \end{figure}
 \end{frame}
@@ -738,38 +848,11 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{Primo esempio illustrativo}
-        \begin{block}{$P_{\mathrm{idle-system}}$}
-            Definiamo la probabilità che il sistema sia in equilibrio ad un momento arbitrario come:
-            $$  P_{\mathrm{idle-system}} = \pi_0 e $$
-        \end{block}
         \begin{itemize}
-            \item Esiste una grande differenza nella misura a seconda dei diversi MAPs utilizzati.
-            \item Il valore ottimale di $L$ dipende dall'obiettivo: ad esempio, per il processo di arrivo PCR, il valore ottimale di $L$ è $16$ se si cerca di minimizzare $L_{\mathrm{system}}$, ma è 6 se si massimizza $P_{\mathrm{idle-system}}$.
+            \item Esiste una grande differenza nella misura a seconda dei diversi \emph{MAPs} utilizzati.
+            \item Il valore ottimale di $L$ dipende dall'obiettivo: ad esempio, per il processo di arrivo \textbf{PCR}, il valore ottimale di $L$ è $16$ se si cerca di minimizzare $L_{\mathrm{system}}$, ma è 6 se si massimizza $P_{\mathrm{idle-system}}$.
         \end{itemize}
 \end{frame}
-
-
-\begin{frame}
-    \frametitle{Primo esempio illustrativo}
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.8\textwidth]{VrxLKYI.png}
-        \caption{Dipendenza della probabilità $P_{\mathrm{idle-busy}}$ rispetto ad $L$ che il main server sia in idle quando il server secondario è in occupato, per diversi MAPs}
-        \label{fig:4}
-    \end{figure}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Primo esempio illustrativo}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.8\textwidth]{EZp90oP.png}
-        \caption{Dipendenza della probabilità $P_{\mathrm{busy-idle}}$ rispetto ad $L$ che il main server sia occupato quando il server secondario è in idle, per diversi MAPs}
-        \label{fig:5}
-    \end{figure}
-\end{frame}
-
 
 \begin{frame}
     \frametitle{Primo esempio illustrativo}
@@ -783,18 +866,50 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \end{block}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.75\textwidth]{VrxLKYI.png}
+        \caption{Dipendenza della probabilità $P_{\mathrm{idle-busy}}$ rispetto ad $L$ che il main server sia in idle quando il server secondario è in occupato, per diversi \emph{MAPs}}
+        \label{fig:4}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Primo esempio illustrativo}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{EZp90oP.png}
+        \caption{Dipendenza della probabilità $P_{\mathrm{busy-idle}}$ rispetto ad $L$ che il main server sia occupato quando il server secondario è in idle, per diversi \emph{MAPs}}
+        \label{fig:5}
+    \end{figure}
+\end{frame}
+
+
+
 
 \begin{frame}
     \frametitle{Secondo esempio illustrativo}
-    \begin{itemize}
-        \item L'obiettivo è valutare l'impatto dei parametri $q$ e $\nu$ sulla prestazione del sistema.
-        \item Fissiamo il valore di $L$ a $10$ e i tassi di servizio $\mu_1$ e $\mu_2$ a $1$ e $0.5$.
-        \item Si variano i valori di $q$ e $\nu$ da $0$ a $1$ con passo $0.05$ e si analizza l'impatto sulle misure di prestazione del sistema.
-    \end{itemize}
-    \begin{block}{}
-        In questo esempio ci concentriamo sul processo di arrivo PCR, la cui scelta è basata sul comportamento di questo processo sulle misure evidenziato nel primo esempio illustrativo
+    \begin{block}{Obiettivi}
+        L'obiettivo è valutare l'impatto dei parametri $q$ e $\nu$ sulla prestazione del sistema. Dove
+        \begin{itemize}
+            \item $q$ è la probabilità che un cliente servito si rifiuti di agire come server secondario
+            \item $\nu$ è la probabilità che un cliente servito da un server secondario non sia soddisfatto e venga mandato indietro al server primario
+        \end{itemize}
+
     \end{block}
+    Fissiamo il valore di $L$ a $10$ e i tassi di servizio $\mu_1$ e $\mu_2$ a $1$ e $0.5$. Si variano i valori di $q$ e $\nu$ da $0$ a $1$ con passo $0.05$ e si analizza l'impatto sulle misure di prestazione del sistema.
 \end{frame}
+
+
+% \begin{frame}
+%     \frametitle{Secondo esempio illustrativo}
+%     \begin{block}{}
+%         In questo esempio ci concentriamo sul processo di arrivo PCR, la cui scelta è basata sul comportamento di questo processo sulle misure evidenziato nel primo esempio illustrativo
+%     \end{block}
+% \end{frame}
 
 
 \begin{frame}
@@ -812,7 +927,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{itemize}
         \item L'analisi mostra che il valore di $L_\mathrm{system}$ è minimo a $7.9328$ quando $q$ e $\nu$ sono entrambi uguali a $0$.
         \item Aumentando $q$ o $\nu$, il valore di $L_\mathrm{system}$ aumenta, con un aumento più veloce quando uno o entrambi si avvicinano a $1$.
-        \item Quando $q=1$, il sistema diventa un modello MAP/M/1 classico e il valore di $L_\mathrm{system}$ diventa $22.30425$ per tutti i valori di $\nu$.
+        \item Quando $q=1$, il sistema diventa un modello \emph{MAP}/M/1 classico e il valore di $L_\mathrm{system}$ diventa $22.30425$ per tutti i valori di $\nu$.
         \item L'uso di un server secondario riduce il numero medio di clienti nel sistema di oltre il $40\%,$ e il punto di interruzione per il modello classico è $\nu^* \sim 0.985$.
     \end{itemize}
 \end{frame}
@@ -820,11 +935,13 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \begin{frame}
     \frametitle{Secondo esempio illustrativo}
-    \begin{itemize}
-        \item Si aumenta $\lambda$ del 50\% a 0.75 per testare l'importo della riduzione del numero medio di clienti nel sistema.
-        \item Mantenendo gli altri parametri costanti, si ottiene una riduzione superiore al 52,8\%.
-        \item Ciò suggerisce che l'aggiunta di un server secondario beneficia notevolmente l'aumento del carico del sistema anche con un tasso di insoddisfazione del cliente del 50\%.
-    \end{itemize}
+\begin{block}{Modifichiamo i parametri}
+        \begin{itemize}
+            \item Si aumenta $\lambda$ del 50\% a 0.75 per testare l'importo della riduzione del numero medio di clienti nel sistema.
+            \item Mantenendo gli altri parametri costanti, si ottiene una riduzione superiore al 52,8\%.
+            \item Ciò suggerisce che l'aggiunta di un server secondario beneficia notevolmente l'aumento del carico del sistema anche con un tasso di insoddisfazione del cliente del 50\%.
+        \end{itemize}
+\end{block}
 \end{frame}
 
 
@@ -841,7 +958,6 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{Secondo esempio illustrativo}
     \begin{itemize}
-        \item La figura mostra come il numero medio di clienti con il server secondario $L_\mathrm{sec}$ dipenda dai parametri $q$ e $\nu$.
         \item $L_\mathrm{sec}$ diminuisce significativamente quando $q$ si avvicina a $1$ e quando i clienti sono raramente reclutati per diventare server secondari.
         \item $L_\mathrm{sec}$ ha il valore massimo quando $q$ è uguale a zero e $\nu$ è vicino a $1$, ma questo può creare ulteriore lavoro per il sistema e riflettersi negativamente sulla fornitura di servizi.
     \end{itemize}
@@ -863,15 +979,17 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{itemize}
         \item $P_\mathrm{idle-system}$ ha il valore minimo di $0.4445$ quando $\nu=1$ e $q=0$, il che è intuitivo poiché servire nuovamente i clienti dopo aver passato attraverso un server secondario mette un carico sul sistema.
         \item $P_\mathrm{idle-system}$ aumenta quando $q$ aumenta e/o $\nu$ diminuisce, con un valore massimo di $0.5652$ ottenuto quando $q=0.65$ e $\nu=0$.
-        \item Nel sistema MAP/M/1 classico corrispondente, questa misura è $P_\mathrm{idle-system}=0.5$.
+        \item Nel sistema \emph{MAP}/M/1 classico corrispondente, questa misura è $P_\mathrm{idle-system}=0.5$.
     \end{itemize}
 \end{frame}
 
 
 \begin{frame}
     \frametitle{Terzo esempio illustrativo}
+    \begin{block}{Obiettivo}
+        Analizzare l'impatto della variazione dei tassi di servizio $\mu_1$ e $\mu_2$ quando tutti gli altri parametri sono fissati.
+    \end{block}
     \begin{itemize}
-        \item In questo esempio, si analizza l'impatto della variazione dei tassi di servizio $\mu_1$ e $\mu_2$ quando tutti gli altri parametri sono fissati.
         \item I parametri fissati sono $L=10$, $q=0.5$, $\nu=0.4$, e $\lambda=0.5$.
         \item I tassi $\mu_1$ e $\mu_2$ vengono variati da $0.25$ a $2.0$ con incrementi di $0.05$, ma per soddisfare la condizione di ergodicità, il valore di $\mu_2$ viene limitato quando $\mu_1$ è piccolo.
         \item Solo per $\mu_1\geq0.4$, il valore di $\mu_2$ può essere variato da $0.25$, come originariamente indicato
@@ -894,7 +1012,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.8\textwidth]{CBOSr9C.png}
-        \caption{Dipendenza del numero medio di clienti nel sistema $L_{\mathrm{system}}$ rispetto a $\mu_1$ e $\mu_2$}
+        \caption{Dipendenza del numero medio di clienti nel sistema $L_{\mathrm{system}}$ rispetto a $\mu_1$ e $\mu_2$ (zoomed-in)}
     \end{figure}
 \end{frame}
 
@@ -938,7 +1056,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \frametitle{Conclusioni}
     \begin{itemize}
         \item Il sistema di coda analizzato prevede la possibilità di reclutare un cliente già servito come server secondario per aiutare il server principale.
-        \item Il processo di arrivo dei clienti è stato modellizzato utilizzando un processo di punto Markoviano versatile, MAP.
+        \item Il processo di arrivo dei clienti è stato modellizzato utilizzando un processo di punto Markoviano versatile, \emph{MAP}.
         \item È stata considerata la possibilità che i clienti insoddisfatti con il servizio fornito dal server secondario possano ritornare nel sistema.
         \item L'analisi dello stato stazionario della catena di Markov multidimensionale ha permesso di ottenere risultati numerici utili per prendere decisioni manageriali.
     \end{itemize}
