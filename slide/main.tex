@@ -134,26 +134,28 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \section{Modello Matematico}
 
+
 \begin{frame}
     \frametitle{Markovian arrival process (\emph{MAP})}
     \begin{itemize}
-        \item Si considera un sistema di coda a singolo server con arrivi secondo un processo di arrivo markoviano (\emph{MAP}) con matrici di parametro di ordine $m$.
-        \item Il \emph{MAP} generalizza processi puntiformi noti come Poisson, Poisson interrotto e rinnovamenti di tipo fase.
-        \item \emph{MAP} è ideale per situazioni in cui può essere presente una correlazione nei tempi tra gli arrivi.
-        \item L'uso di \emph{MAP} semplifica l'analisi e ne rende più facile la comprensione grazie alla notazione semplice e all'utilizzo del formalismo delle matrici.
+        \item Un \emph{MAP} è un processo stocastico che descrive il comportamento degli arrivi in un sistema di coda.
+        \item È caratterizzato dalla sua distribuzione di probabilità di interarrivo, che descrive il tempo tra due arrivi consecutivi, e dalla sua distribuzione di probabilità di dimensione, che descrive il numero di entità che arrivano contemporaneamente.
+        \item Può essere definito come un processo di Markov a tempi continui, dove la probabilità di transizione dipende solo dallo stato corrente del sistema e non dalla sua storia passata.
     \end{itemize}
 \end{frame}
+
+
 
 \begin{frame}
     \frametitle{Caratterizzazione del \emph{MAP}}
     \begin{itemize}
         \item Il generatore irriducibile del processo di arrivo markoviano (\emph{MAP}) è dato dalla somma delle matrici di parametro $D_0$ e $D_1$ di ordine m.
+            \begin{block}{}
+                L'invariante di probabilità $\delta$ soddisfa l'equazione
+                $$\delta (D_0 + D_1) = \textbf{0} \qquad \delta e = 1$$
+            \end{block}
         \item La matrice $D_0$ governa le transizioni del generatore sottostante che non producono arrivi, mentre la matrice $D_1$ governa quelle transizioni corrispondenti agli arrivi nel sistema.
     \end{itemize}
-    \begin{block}{}
-        L'invariante di probabilità $\delta$ soddisfa l'equazione
-        $$\delta (D_0 + D_1) = \textbf{0} \qquad \delta e = 1$$
-    \end{block}
 \end{frame}
 
 
@@ -209,7 +211,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{Due approcci possibili}
 
-    \begin{block}{QDB}
+    \begin{block}{QBD}
         Primo processo che analizzeremo in  questa sezione: un caso particolare delle catena di markov a tempo continuo (CTMC)
     \end{block}
 
@@ -219,13 +221,13 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 \end{frame}
 
-\subsection{QDB}
+\subsection{QBD}
 
 
 \begin{frame}
-    \frametitle{Introduzione al QDB}
+    \frametitle{Introduzione al QBD}
     \begin{block}{}
-        Un \emph{quasi-death-birth process} (QDB) è un caso particolare di una catena di Markov a tempo continuo (CTMC) che può essere utilizzato per modellare certi tipi di sistemi di coda. Ci sono due tipi di eventi che possono verificarsi: eventi di morte e eventi di nascita.
+        Un \emph{quasi-death-birth process} (QBD) è un caso particolare di una catena di Markov a tempo continuo (CTMC) che può essere utilizzato per modellare certi tipi di sistemi di coda. Ci sono due tipi di eventi che possono verificarsi: eventi di morte e eventi di nascita.
     \end{block}
     \begin{itemize}
         \item Un evento di morte avviene quando un cliente lascia il sistema (i.e finisce di essere servito e se ne va)
@@ -235,10 +237,10 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 
 \begin{frame}
-    \frametitle{Introduzione al QDB}
+    \frametitle{Introduzione al QBD}
 
     \begin{block}{}
-        Imponendo le restrizioni di entrambi i tipi di code $M/G/1$ che delle $G/M/1$, si vietano transizioni di più di livello alla volta, ottenendo così un processo QDB.
+        Imponendo le restrizioni di entrambi i tipi di code $M/G/1$ che delle $G/M/1$, si vietano transizioni di più di livello alla volta, ottenendo così un processo QBD.
     \end{block}
     La matrice di transizione di tale processo è definita come segue:
     \begin{equation*}
@@ -250,21 +252,33 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
             & & A_{-1} & A_0 & \ddots \\
             0 & & & \ddots & \ddots
         \end{pmatrix}
+        ,\quad A_{-1}, A_0, A_1, \in \mathbb{R}^{m \times m}, \quad B_0 \in \mathbb{R}^{m \times m}
     \end{equation*}
 
 \end{frame}
 
 
 \begin{frame}
-    \frametitle{Introduzione al QDB}
-    \begin{block}{Generalizzazione del QDB}
-        Si potrebbe pensare al QDB come un semplice lista lineare in evoluzione: ogni livello è un nodo nella lista ed il processo è autorizzato a muoversi da un nodo ad uno dei suoi due vicini.
+    \frametitle{Introduzione al QBD}
+    \begin{block}{Generalizzazione del QBD}
+        Si potrebbe pensare al QBD come un semplice lista lineare in evoluzione: ogni livello è un nodo nella lista ed il processo è autorizzato a muoversi da un nodo ad uno dei suoi due vicini.
     \end{block}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Generatore infinitesimale del processo QBD}
+    \begin{block}{}
+        Il generatore infinitesimale di un processo QBD è una matrice tridiagonale a blocchi infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo
+    \end{block}
+    % Dato $Q$ questo generatore infinitesimale, l'elemento $q_{ij}, (i \neq j)$ denota il rate di partenza da uno stato $i$ e di arrivo in uno stato $j$. Gli elementi diagonali invece sono definiti come segue:
+    % $$ q_{ii} = -\sum_{j\neq i} q_{ij} $$
+%    \begin{itemize}
+%     \item La matrice ha un numero infinito di righe e colonne, una per ogni possibile stato del sistema.
+%    \end{itemize}
+\end{frame}
 
 \begin{frame}
-    \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
+    \frametitle{Generatore infinitesimale del processo QBD}
     Al tempo $t\geq 0$, indichiamo:
     \begin{itemize}
         \item $i_t\geq 0$ il numero di clienti nel sistema
@@ -277,39 +291,29 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \end{frame}
 
 
-\begin{frame}
-    \frametitle{Generatore infinitesimale del processo QBD}
-    \begin{block}{}
-        Il generatore (infinitesimale) di un processo QDB è una matrice quadrata infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo
-    \end{block}
-%    \begin{itemize}
-%     \item La matrice ha un numero infinito di righe e colonne, una per ogni possibile stato del sistema.
-%    \end{itemize}
-\end{frame}
+
+
+% \begin{frame}
+%     \frametitle{Generatore infinitesimale del processo QBD}
+%     Le transizioni di un QBD sono di tre tipi:
+%     \begin{itemize}
+%         \item \textbf{Birth}: una nuova entità entra nel sistema.
+%         \item \textbf{Deaths}: una entità lascia il sistema.
+%         \item \textbf{No-change}: il numero di entità nel sistema non cambia.
+%         % La probabilità di transizione tra uno stato i e uno stato j dipende dalla differenza tra i e j. In particolare, se j = i+1, la transizione è una birth, se j = i-1, la transizione è una death, altrimenti j = i e la transizione è una no-change.
+%     \end{itemize}
+% \end{frame}
 
 
 \begin{frame}
     \frametitle{Generatore infinitesimale del processo QBD}
-    Le transizioni di un QDB sono di tre tipi:
-    \begin{itemize}
-        \item \textbf{Birth}: una nuova entità entra nel sistema.
-        \item \textbf{Deaths}: una entità lascia il sistema.
-        \item \textbf{No-change}: il numero di entità nel sistema non cambia.
-        % La probabilità di transizione tra uno stato i e uno stato j dipende dalla differenza tra i e j. In particolare, se j = i+1, la transizione è una birth, se j = i-1, la transizione è una death, altrimenti j = i e la transizione è una no-change.
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Generatore infinitesimale del processo QBD}
-    Enumerando gli stati del CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico e indicando con $i$ il livello, per $i\geq 0$, l'insieme di stati come
+    Enumerando gli stati della CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico e indicando con $i$ il livello, per $i\geq 0$, definiamo l'insieme di stati come
     $$\{(i,n,k):0\leq n\leq \min(i,L),,1\leq k\leq m\}$$
-    il generatore (infinitesimale), $Q$, di questo CTMC è dato dal seguente teorema
 \end{frame}
 
 
 \begin{frame}
-    \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
+    \frametitle{Generatore infinitesimale del processo QBD}
     \begin{theorem}
         Il generatore infinitesimale $Q$ del processo stocastico CTMC $\{\zeta_t,,t\geq 0\}$ ha una struttura a blocchi tridiagonale come segue:
         \small{\begin{equation*}
@@ -330,15 +334,78 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 
 \begin{frame}
-    \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
+    \frametitle{Generatore infinitesimale del processo QBD}
     Dove i blocchi $Q_{i,i}$ sono definiti come segue:
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.9\textwidth]{T9RIVqa.png}
-    \end{figure}
+    \begin{block}{}
+        $$Q_{0,0} = D_0$$
+    \end{block}
+    \begin{block}{}
+        $$ Q_{i,i} = I_{i+1} \otimes \nu \mu_2 E_i^{-} \otimes I_m - (\mu_1 \widehat{I}_i + \mu_2 (I_{i+1} - \overline{I_i})) \otimes I_m \qquad 1 \leq i \leq L$$
+    \end{block}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Generatore infinitesimale del processo QBD}
+    \begin{block}{}
+        $$ Q_{i,i} = I_{i+1} \otimes \nu \mu_2 E_i^{-} \otimes I_m - (\mu_1 \widehat{I}_i + \mu_2 (I_{i+1} - \overline{I_i})) \otimes I_m \qquad 1 \leq i \leq L$$
+    \end{block}
+    Dove:
+    \begin{itemize}
+        \item [$\otimes$] indica il prodotto di Kronecker per matrici
+        \item [$E_l^-$] è una matrice quadrata di dimensioni $l+1$ con $(E_l^-)_{k,k-1} = 1$ per $1 \leq k \leq l$ e tutte le altre componenti nulle.
+        \item [$\widehat{I_l}$] è una matrice quadrata di dimensioni $l+1$ con $(\widehat{I_l})_{k,k} = 1$ per $0 \leq k \leq l-1$ e tutte le altre componenti nulle.
+        \item [$\overline{I_l}$] è una matrice quadrata di dimensioni $l+1$ con $(\overline{I_l})_{0,0} = 1$ e tutte le altre componenti nulle.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Generatore infinitesimale del processo QBD}
+    Mentre abbiamo
+    \begin{block}{}
+        $$ Q_{i,i+1} = E_i^+ \otimes D_1 \qquad 0 \leq i \leq L-1 $$
+    \end{block}
+    \begin{block}{}
+        $$ Q_{1,0} = (1-\nu) \mu_2 \widetilde{E}_1^- \otimes I_m + \mu_1 I_1^- \otimes I_m \qquad 1 \leq i \leq L $$
+    \end{block}
+    \begin{block}{}
+        $$ Q_{i,i-1} = (1-\nu) \mu_2 \widetilde{E}_i^- \otimes I_m + q \mu_1 I_i^- \otimes I_m + (1-q) \mu_1 I_i^+ \otimes I_m \qquad 1 \leq i \leq L $$
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Generatore infinitesimale del processo QBD}
+    Dove
+    \begin{itemize}
+        \item [$E_l^+$] è una matrice di dimensioni $(l+1) \times (l+2)$ con $(E_l^+)_{k,k} = 0$ per $0 \leq k \leq l$ e tutte le altre componenti nulle.
+        \item [$\widetilde{E}_l^-$] è una matrice di dimensioni $(l+1) \times l$ con $(\widetilde{E}_l^-)_{k,k-1} = 1$ per $1 \leq k \leq l$ e tutte le altre componenti nulle.
+        \item [$I_l^-$] è una matrice di dimensioni $(l+1) \times l$ con $(I_l^-)_{k,k} = 1$ per $0 \leq k \leq l-1$ e tutte le altre componenti nulle.
+        \item [$I_l^+$] è una matrice di dimensioni $(l+1) \times l$ con  $(I_l^+)_{0,l-1} = 1, (I_l^+)_{k,k} = 1$ per $1 \leq k \leq l-1$ e tutte le altre componenti nulle.
+    \end{itemize}
+\end{frame}
+
+% \begin{frame}
+%     \frametitle{Descrizione del processo QBD che governa il sistema e il suo generatore}
+%     Dove i blocchi $Q_{i,i}$ sono definiti come segue:
+%     \begin{figure}[h]
+%         \centering
+%         \includegraphics[width=0.9\textwidth]{T9RIVqa.png}
+%     \end{figure}
+% \end{frame}
+
 \subsubsection{Condizione di ergodicità del processo QBD}
+
+\begin{frame}
+    \frametitle{Introduzione alla proprietà di ergodicità}
+    \begin{block}{Definizione}
+        Una catena di Markov si dice \emph{ergodica} se il limite
+        $$ \pi(j) = \lim_{n\to \infty} \mathbb{P}_i \{X_n = j\} $$
+        esiste per ogni stato $j$ e non dipende dallo stato iniziale $i$. Questo può anche essere scritto come
+        $$ \pi(j) = \lim_{n \to \infty} (P^n)_{i,j} $$
+    \end{block}
+
+\end{frame}
 
 \begin{frame}
     \frametitle{Condizione di ergodicità del processo QBD}
@@ -362,6 +429,16 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
         \begin{equation*}
             y(Q^- + Q^0 + Q^+) = \textbf{0}, \qquad ye = 1
         \end{equation*}
+        con
+        \small{\begin{equation*}
+            Q^+ = I_{L+1} \otimes D_1, \qquad i \geq L
+        \end{equation*}
+        \begin{equation*}
+            Q^- = (1-\nu) \mu_2 E_L^- \otimes I_m + q \mu_1 I_{(L+1)m} + (1-q)\mu_1I^+ \otimes I_m \qquad i > L
+        \end{equation*}
+        \begin{equation*}
+            Q^0 = I_{L+1} \otimes D_0 + \nu \mu_2 E_L^{-} \otimes I_m - (\mu_1 I_{L+1} + \mu_2(I_{L+1} - \overline{I}_L)) \otimes I_m \qquad i > L
+        \end{equation*}}
 
     \end{block}
 \end{frame}
@@ -440,15 +517,19 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \end{block}
 \end{frame}
 
-\subsubsection{Calcolo della distribuzione stazionaria del processo QDB}
+\subsubsection{Calcolo della distribuzione stazionaria del processo QBD}
 
 \begin{frame}
     \frametitle{Probabilità stazionarie}
     \begin{block}{}
-        La distribuzione stazionaria di un processo QDB è la distribuzione di probabilità asintotica delle diverse configurazioni del sistema che si osservano nel lungo termine.
+         \begin{center}
+            La distribuzione stazionaria di una CTMC irriducibile ricorrente è la distribuzione di probabilità a cui il processo converge per valori grandi di $t$.
+         \end{center}
         % In altre parole, la distribuzione stazionaria è la distribuzione di probabilità di trovare il sistema in uno stato particolare quando il tempo tende all'infinito.
     \end{block}
-    In particolare, per un processo QDB con n stati, la distribuzione stazionaria è un vettore di probabilità $\pi = (\pi_1, \pi_2, ..., \pi_n)$, dove ogni $\pi_i$ rappresenta la probabilità di trovare il sistema nello stato $i$.
+    In particolare, per un processo QBD con n stati, la distribuzione stazionaria è un vettore di probabilità
+    $$\pi = (\pi_1, \pi_2, ..., \pi_n)$$
+    dove ogni $\pi_i$ rappresenta la probabilità di trovare il sistema nello stato $i$.
 \end{frame}
 
 
@@ -468,8 +549,8 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{Probabilità stazionarie}
     Sappiamo che i vettori di probabilità stazionari $\pi_i, i \geq 0$, soddisfano il sistema di equazioni algebriche lineari (equazioni di equilibrio):
-    $$(\pi_0, \pi_1, \pi_, \dots)Q = 0 \qquad (\pi_0, \pi_1, \pi_, \dots)e = 1$$
-    dove $Q$ è la matrice di transizione del CTMC $\{\zeta_t, t \geq 0\}$ e $e$ è il vettore colonna di tutti gli elementi $1$
+    $$(\pi_0, \pi_1, \pi_, \dots)Q = 0 \qquad (\pi_0, \pi_1, \pi_, \dots)\textbf{e} = 1$$
+    dove $Q$ è la matrice di transizione del CTMC $\{\zeta_t, t \geq 0\}$ ed $\textbf{e}$ è il vettore colonna di tutti gli elementi $1$
 \end{frame}
 
 % La soluzione del problema di calcolo della distribuzione stazionaria di una QBD indipendente dal livello è ben nota; si veda [37]. Per i livelli in cui le transizioni della QBD non dipendono dal livello, i vettori di probabilità stazionaria sono trovati in forma matriciale geometrica. I vettori di probabilità stazionaria dei livelli di confine, in cui le transizioni della QBD dipendono dal livello, sono quindi direttamente trovati come soluzione del sistema di equazioni algebriche lineari. Tuttavia, se il numero di livelli di confine è grande (cosa che accade nel nostro modello se $L$ è grande), questo sistema ha una grande dimensione
@@ -477,7 +558,7 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 \begin{frame}
     \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
     \begin{block}{}
-            Vediamo un algoritmo per risolvere il sistema infinito di equazioni di equilibrio che sfrutta la struttura tridiagonale a blocchi ma dipendente dal livello del generatore per i livelli minori di $L + 1$.
+            Vediamo un algoritmo che sfrutta la struttura tridiagonale a blocchi, ma dipendente dal livello, del generatore per i livelli inferiori a $L+1$, in modo da risolvere più efficientemente il sistema di equazioni lineari algebriche quando il numero di livelli di confine è elevato.
     \end{block}
 \end{frame}
 
@@ -525,9 +606,9 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
     \frametitle{Algoritmo per risolvere il sistema di equazioni di equilibrio}
     \begin{theorem}
         Le matrici stocastiche $G_i$ sono calcolate utilizzando la seguente formula ricorsiva all'indietro:
-                $$G_L = G$$
-                $$G_L-1 = -(Q_{L,L} + Q^+G_L)^{-1}Q_{L,L-1}$$
-                $$G_i = -(Q_{i+1,i+1} + Q_{i+1,i+2}G_{i+1})^{-1}Q_{i+1,i}, \qquad i = L-2, L-3, \dots, 0$$
+            $$G_L = G$$
+            $$G_{L-1} = -(Q_{L,L} + Q^+G_L)^{-1}Q_{L,L-1}$$
+            $$G_i = -(Q_{i+1,i+1} + Q_{i+1,i+2}G_{i+1})^{-1}Q_{i+1,i}, \qquad i = L-2, L-3, \dots, 0$$
         dove la matrice $G$ è la minima soluzione non negativa dell'equazione quadratica matriciale
         \begin{equation*}
             Q^+G^2 + Q^0G + Q^- = 0
@@ -550,9 +631,14 @@ Sia $\alpha_n$ il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_
 
 
 \begin{frame}{Introduzione alle code di tipo GI/M/1}
-\begin{block}{}
-        Le code di tipo GI/M/1 assumono che i tempi di arrivo e di servizio siano distribuiti secondo una distribuzione generale, ma la distribuzione del tempo di servizio è indipendente dal numero di clienti in coda.
-\end{block}
+    \begin{block}{}
+        Una coda di tipo GI/M/1 è un processo stocastico che modella il comportamento di un sistema di code con un singolo server
+    \end{block}
+    \begin{itemize}
+        \item [GI] \emph{General inter-arrival time distribution} distribuzione del tempo tra gli arrivi dei clienti alla coda.
+        \item [M] \emph{Markovian service time distribution}: si riferisce alla distribuzione dei tempi di servizio per ciascun cliente, che viene assunta essere un processo di Markov.
+        \item [1] \emph{One server}: un solo server nel sistema, e che solo un cliente alla volta può essere servito.
+    \end{itemize}
 \end{frame}
 
 

@@ -50,23 +50,9 @@
 
 \subsection{Queueing Theory}
 
-% Queueing models are used to represent systems of resources, traditionally called “servers”, which are to be used by several users, called “customers”. The terminology stems from applications like bank tellers, hotel reception desks, toll booths on freeways, and so on, where customers actually queue up until they are served by an employee. Queueing theory is used in much more diverse circumstances, however. \\
-
-% \noindent Simple queues consist of one server which attends to one customer at a time, in order of their arrivals, with the added assumption that customers are indefinutely patient. We assume that time is discretized into intervals of fixed length, that a random number of customers join the system during each interval, and that the server removes one customer from the queue at the end of each interval,if there is any. Definung $\alpha_n$ as the number of new arrivals during the interval
-% $[n - 1, n)$ and $X_n$ as the number of customers in the system at time $n$, we have
-
-% \begin{equation}
-%     \begin{cases}
-%         X_n + \alpha_{n+1} - 1 & \text{if } X_n + \alpha_{n+1} \geq 1 \\
-%         0 & \text{if } X_n + \alpha_{n+1} = 0
-%     \end{cases}
-% \end{equation}
-
-% \noindent If $\{\alpha_n \}$ is a collection of independent random variables, then $X_{n+1}$ is conditionally independent of $X_0 , . . . , X_{n-1}$ if $X_n$ is known. If, in addition, the $\alpha_n$'s are identically distributed, then ${X_n}$ is homogeneous. The state space is $\N$.
-
 I modelli di coda sono utilizzati per rappresentare sistemi di risorse, tradizionalmente chiamati "server", che devono essere utilizzati da diversi utenti, chiamati "clienti". La terminologia deriva da applicazionu come gli sportelli bancari, le reception degli hotel, i caselli autostradali, e così via, dove i clienti effettivamente si mettono in coda finché non vengono serviti da un dipendente. Tuttavia, la teoria delle code viene utilizzata in contesti molto più diversi. \vspace*{0.4cm}
 
-\noindent Le code semplici consistono di un solo server che attende un solo cliente alla volta, in ordine di arrivo, con l'aggiunta dell'assunzione che i clienti siano indefinutamente pazienti. Si assume che il tempo sia discretizzato in intervalli di lunghezza fissa, che un numero casuale di clienti si unusca al sistema durante ognu intervallo e che il server rimuova un cliente dalla coda alla fine di ognu intervallo, se presente. Definendo $\alpha_n$ come il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_n$ come il numero di clienti nel sistema al tempo $n$, abbiamo
+\noindent Le code semplici consistono di un solo server che attende un solo cliente alla volta, in ordine di arrivo, con l'aggiunta dell'assunzione che i clienti siano indefinitamente pazienti. Si assume che il tempo sia discretizzato in intervalli di lunghezza fissa, che un numero casuale di clienti si unisca al sistema durante ogni intervallo e che il server rimuova un cliente dalla coda alla fine di ogni intervallo, se presente. Definendo $\alpha_n$ come il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_n$ come il numero di clienti nel sistema al tempo $n$, abbiamo
 
 \begin{equation}
     X_{n+1} =
@@ -111,7 +97,12 @@ I modelli di coda sono utilizzati per rappresentare sistemi di risorse, tradizio
 \section{Modello Matematico}
 
 
-Consideriamo un sistema di coda a singolo server in cui gli arrivi avvengono secondo un processo di arrivo markoviano (MAP) con matrici di parametro (D0, D1) di ordine m. Il MAP generalizza alcuni dei processi puntiformi ben noti come Poisson, Poisson interrotto e rinnovamenti di tipo fase, tra gli altri. Inoltre, MAP è ideale in situazioni in cui può essere presente una correlazione nei tempi tra gli arrivi. Supponiamo che gli arrivi provengano da diverse fonti in un'area comune per il trattamento. Anche se tutte le singole fonti generano arrivi secondo processi di rinnovo, quello combinato potrebbe non essere necessariamente un processo di rinnovo (a meno che tutte le singole fonti siano processi di Poisson). Un'altra parte attraente dell'uso di MAP è che l'analisi richiede il formalismo delle matrici e le ragioni intuitive associate all'analisi.
+Consideriamo un sistema di coda a singolo server in cui gli arrivi avvengono secondo un processo di arrivo markoviano (MAP) con matrici di parametro (D0, D1) di ordine m. Un Processo di Arrivo Markoviano (MAP) è un processo stocastico usato per descrivere il comportamento degli arrivi in un sistema di coda. In un sistema di coda, gli arrivi rappresentano le richieste o le entità che si presentano al sistema per essere servite. \\
+
+\noindent Un MAP è caratterizzato dalla sua distribuzione di probabilità di interarrivo, che descrive il tempo tra due arrivi consecutivi, e dalla sua distribuzione di probabilità di dimensione, che descrive il numero di entità che arrivano contemporaneamente. \\
+
+\noindent Un MAP può essere definito come un processo di Markov a tempi continui, dove la probabilità di transizione dipende solo dallo stato corrente del sistema e non dalla sua storia passata. In altre parole, la probabilità di passare da uno stato ad un altro dipende solo dallo stato attuale e dal tempo trascorso da quando lo stato attuale è stato raggiunto.Il MAP è ideale in situazioni in cui può essere presente una correlazione nei tempi tra gli arrivi.
+% Supponiamo che gli arrivi provengano da diverse fonti in un'area comune per il trattamento. Anche se tutte le singole fonti generano arrivi secondo processi di rinnovo, quello combinato potrebbe non essere necessariamente un processo di rinnovo (a meno che tutte le singole fonti siano processi di Poisson).
 
 \subsection{Markovian arrival process (\textsc{map})}
 
@@ -144,13 +135,38 @@ Analizzeremo il modello di coda in studio in stato stazionario. L'analisi può e
 
 \subsection{Description of the QBD Process Governing the System and Its Generator}
 
+Un \emph{quasi-death-birth process} (QBD) è un caso particolare di una catena di Markov a tempo continuo (CTMC) che può essere utilizzato per modellare certi tipi di sistemi di coda. Ci sono due tipi di eventi che possono verificarsi: eventi di morte e eventi di nascita.
+\begin{itemize}
+    \item Un evento di morte avviene quando un cliente lascia il sistema (i.e finisce di essere servito e se ne va)
+    \item Un evento di nascita avviene quando un nuovo cliente entra nel sistema
+\end{itemize}
+
+Un modo per combinare le strutture delle markov chains di tipo M/G/1 e G/M/1, è quello che imporre le restrizioni di entrambe, in modo che il processo possa cambiare di un livello alla volta, diventando così skip-free in entrambe le direzioni. Queste catene di Markov sono chiamate processi quasi-nascita-e-morte (QBD) e la loro matrice di transizione è
+\begin{equation*}
+    P=
+    \begin{pmatrix}
+        B_0 & A_1 & & & 0 \\
+        A_{-1} & A_0 & A_1 & & \\
+        & A_{-1} & A_0 & A_1 & \\
+        & & A_{-1} & A_0 & \ddots \\
+        0 & & & \ddots & \ddots
+    \end{pmatrix}
+    ,\quad A_{-1}, A_0, A_1, \in \mathbb{R}^{m \times m}, \quad B_0 \in \mathbb{R}^{m \times m}
+\end{equation*}
+matrici non negativa tali che $A_{-1} + A_0 + A_1$ e $B_0 + B_1$ sono stocastiche. Osserviamo che un QBD può essere visto come una catena di Markov di tipo M/G/1 ma anche come una catena di Markov di tipo G/M/1. Quindi l generatore infinitesimale di un processo QBD è una matrice tridiagonale a blocchi infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo.
+%   Dato $Q$ questo generatore infinitesimale, l'elemento $q_{ij}, (i \neq j)$ denota il rate di partenza da uno stato $i$ e di arrivo in uno stato $j$. Gli elementi diagonali invece sono definiti come segue:
+% $$ q_{ii} = -\sum_{j\neq i} q_{ij} $$
+
 Supponiamo che, al tempo $t\geq 0$, indichiamo:
 \begin{itemize}
     \item il numero di clienti nel sistema come $i_t\geq 0$;
     \item il numero di clienti in servizio al server secondario come $n_t\in\{0,\ldots,\min(i_t,L)\}$ (notare che quando $n_t=0$, il sistema non ha un server secondario);
     \item lo stato del processo sottostante del MAP che descrive gli arrivi dei clienti come $\xi_t=1,\ldots,m$.
 \end{itemize}
-Allora, il processo stocastico $\{\zeta_t=(i_t,n_t,\xi_t),,t\geq 0\}$ che descrive il comportamento del modello in esame è un CTMC regolare e irriducibile. Enumerando gli stati del CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico e indicando con $i$ il livello, per $i\geq 0$, l'insieme di stati come $\{(i,n,k):0\leq n\leq \min(i,L),,1\leq k\leq m\}$, il generatore (infinitesimale), $Q$, di questo CTMC è dato dal seguente teorema.
+Allora, il processo stocastico $\{\zeta_t=(i_t,n_t,\xi_t),,t\geq 0\}$ che descrive il comportamento del modello in esame è un CTMC regolare e irriducibile.
+% Il generatore infinitesimale di un processo QBD è una matrice tridiagonale a blocchi infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo
+
+Enumerando gli stati del CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico e indicando con $i$ il livello, per $i\geq 0$, l'insieme di stati come $\{(i,n,k):0\leq n\leq \min(i,L),,1\leq k\leq m\}$, il generatore (infinitesimale), $Q$, di questo CTMC è dato dal seguente teorema.
 
 \clearpage
 \begin{teorema}
@@ -190,6 +206,11 @@ Allora, il processo stocastico $\{\zeta_t=(i_t,n_t,\xi_t),,t\geq 0\}$ che descri
 
 \subsection{Ergodicity Condition of the QBD Process}
 
+Siamo interessati a studiare l'ergodicità, una proprietà di un processo casuale in cui la sua media nel tempo è uguale alla sua media nel probabilità spazio. Formalmente in una catena di Markov si dice \emph{ergodica} se il limite
+$$ \pi(j) = \lim_{n\to \infty} \mathbb{P}_i \{X_n = j\} $$
+esiste per ogni stato $j$ e non dipende dallo stato iniziale $i$. Questo può anche essere scritto come
+$$ \pi(j) = \lim_{n \to \infty} (P^n)_{i,j} $$
+In altre parole, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lungo periodo di tempo è indipendente dallo stato iniziale $i$.
 
 \begin{teorema}
     Il processo stocastico CTMC $\{\zeta_t,,t\geq 0\}$ è ergodico se e solo se vale la seguente disuguaglianza:
@@ -263,7 +284,21 @@ Consideriamo i vettori riga delle probabilità di stato stazionario $\pi_i$ come
 \begin{equation}
     (\pi_0, \pi_1, \pi_, \dots)Q = 0 \qquad (\pi_0, \pi_1, \pi_, \dots)e = 1
 \end{equation}
-dove $Q$ è la matrice di transizione del CTMC $\zeta_t, t \geq 0$ e $e$ è il vettore colonna di tutti gli elementi $1$. La soluzione del problema di calcolo della distribuzione stazionaria di una QBD indipendente dal livello è ben nota; si veda [37]. Per i livelli in cui le transizioni della QBD non dipendono dal livello, i vettori di probabilità stazionaria sono trovati in forma matriciale geometrica. I vettori di probabilità stazionaria dei livelli di confine, in cui le transizioni della QBD dipendono dal livello, sono quindi direttamente trovati come soluzione del sistema di equazioni algebriche lineari. Tuttavia, se il numero di livelli di confine è grande (cosa che accade nel nostro modello se $L$ è grande), questo sistema ha una grande dimensione. Qui presentiamo un algoritmo che sfrutta essenzialmente la struttura tridiagonale a blocchi ma dipendente dal livello del generatore per i livelli minori di $L + 1$. L'algoritmo utilizzato per risolvere il sistema infinito di equazioni di equilibrio è presentato nella seguente teorema:
+dove $Q$ è la matrice di transizione del CTMC $\zeta_t, t \geq 0$ e $e$ è il vettore colonna di tutti gli elementi $1$. Vediamo ora come trovare la soluzione del problema del calcolo della distribuzione di equilibrio in questo contesto. In particolare, vediamo la soluzione per i casi in cui le transizioni della QBD non dipendono dal livello in cui ci si trova e per i casi in cui le transizioni dipendono dal livello. Nel primo caso, le probabilità stazionarie vengono trovate in una forma matrice-geometrica. Nel secondo caso, invece, le probabilità stazionarie dei livelli di confine, in cui le transizioni dipendono dal livello, vengono direttamente trovate come soluzione del sistema di equazioni lineari algebriche. Tuttavia, se il numero di livelli di confine è elevato (cosa che avviene nel modello considerato se L è grande), questo sistema può diventare molto grande. \\
+
+Gli autori presentano quindi un algoritmo che sfrutta la struttura tridiagonale a blocchi, ma dipendente dal livello, del generatore per i livelli inferiori a L+1, in modo da risolvere più efficientemente il sistema di equazioni lineari algebriche quando il numero di livelli di confine è elevato. \\
+
+\paragraph{Stati del QBD} In un processo di Markov con matrice di transizione QBD (Quasi-Birth-Death), le transizioni possono essere classificate in due categorie: dipendenti dal livello o indipendenti dal livello. Le transizioni indipendenti dal livello sono quelle che avvengono con la stessa probabilità in ogni stato del processo, senza dipendere dal livello corrente. Queste transizioni sono rappresentate nella matrice di transizione da diagonali e sottodiagonali costanti, che riflettono il fatto che la probabilità di passare da uno stato all'altro non dipende dallo stato corrente. Le transizioni dipendenti dal livello, al contrario, sono quelle che avvengono con probabilità differenti a seconda del livello in cui ci si trova. In altre parole, la probabilità di una transizione dipendente dal livello dipende dallo stato corrente. Queste transizioni sono rappresentate nella matrice di transizione da diagonali e sottodiagonali che variano con il livello, in modo da riflettere la dipendenza della probabilità di transizione dallo stato corrente. In sintesi, quando una matrice di transizione QBD ha transizioni indipendenti dal livello, la probabilità di transizione da uno stato all'altro non dipende dallo stato corrente. Quando, invece, le transizioni dipendono dal livello, la probabilità di transizione da uno stato all'altro dipende dallo stato corrente e quindi dal livello corrente del processo di Markov. \\
+
+Un livello di confine è un livello in cui le transizioni dipendono dal livello stesso. In altre parole, le probabilità di transizione da un livello di confine a un altro livello dipendono dal livello di partenza. Un esempio concreto di processo QBD con livelli di confine è un sistema di code in cui gli arrivi sono rappresentati come processi di Poisson e i servizi sono rappresentati come processi deterministici. In questo caso, i livelli di confine rappresentano il numero di clienti nel sistema che corrispondono a un cambio di regime, ad esempio, quando un nuovo server viene aperto o chiuso. Nel nostro caso, viene detto che per i livelli di confine, le probabilità stazionarie non possono essere trovate in modo diretto attraverso la matrice di transizione, ma devono essere calcolate come soluzione di un sistema di equazioni lineari algebriche. In particolare, viene sottolineato che se il numero di livelli di confine è grande, la soluzione di questo sistema può diventare complessa e richiedere l'utilizzo di algoritmi appositi per risolverlo in modo efficiente.
+
+% In un processo di Markov con matrice di transizione QBD (Quasi-Birth-Death), le transizioni possono essere classificate in due categorie: dipendenti dal livello o indipendenti dal livello.
+
+% Le transizioni indipendenti dal livello sono quelle che avvengono con la stessa probabilità in ogni stato del processo, senza dipendere dal livello corrente. Queste transizioni sono rappresentate nella matrice di transizione da diagonali e sottodiagonali costanti, che riflettono il fatto che la probabilità di passare da uno stato all'altro non dipende dallo stato corrente.
+
+% Le transizioni dipendenti dal livello, al contrario, sono quelle che avvengono con probabilità differenti a seconda del livello in cui ci si trova. In altre parole, la probabilità di una transizione dipendente dal livello dipende dallo stato corrente. Queste transizioni sono rappresentate nella matrice di transizione da diagonali e sottodiagonali che variano con il livello, in modo da riflettere la dipendenza della probabilità di transizione dallo stato corrente.
+
+% In sintesi, quando una matrice di transizione QBD ha transizioni indipendenti dal livello, la probabilità di transizione da uno stato all'altro non dipende dallo stato corrente. Quando, invece, le transizioni dipendono dal livello, la probabilità di transizione da uno stato all'altro dipende dallo stato corrente e quindi dal livello corrente del processo di Markov.
 
 \begin{teorema}
     I vettori $\pi_i, i \geq 0$, sono trovati come soluzione del sistema di equazioni algebriche lineari:
@@ -309,37 +344,48 @@ dove $Q$ è la matrice di transizione del CTMC $\zeta_t, t \geq 0$ e $e$ è il v
     \end{proof}
 \end{teorema}
 
-Questo algoritmo è una modifica efficace dell'algoritmo per il calcolo della distribuzione stazionaria del CTMC asintoticamente quasi-Toeplitz (vedi, ad esempio, [31], pp. 145-146). In [31], i vettori $\pi_i$ sono calcolati come $\pi_i = \pi_0 F_i , i \geq 0$, dove le matrici $F_i$ sono ottenute dalla ricorsione di matrici simile all'Equazione \ref{eq:rec-alpha}. Utilizzando la ricorsione di vettori come indicato nell'Equazione \ref{eq:rec-alpha} invece della ricorsione di matrici corrispondente, si ottiene una significativa riduzione della memoria del computer richiesta e del tempo di esecuzione. L'esistenza delle inverse delle matrici (tutte sub-generatori irriducibili) che appaiono nell'algoritmo sopra segue immediatamente, ad esempio, dal teorema di O. Tausska [55]. Inoltre, queste matrici sono semi-stabili (e quindi le inverse dei negativi di queste matrici sono non negative), risultando nella produzione di procedure ricorsive stabili nell'implementazione numerica dell'algoritmo.
+Questo algoritmo è una modifica efficace dell'algoritmo per il calcolo della distribuzione stazionaria del CTMC asintoticamente quasi-Toeplitz. Utilizzando la ricorsione di vettori come indicato nell'Equazione \ref{eq:rec-alpha} invece della ricorsione di matrici corrispondente, si ottiene una significativa riduzione della memoria del computer richiesta e del tempo di esecuzione. L'esistenza delle inverse delle matrici (tutte sub-generatori irriducibili) che appaiono nell'algoritmo sopra segue immediatamente, ad esempio, dal teorema di O. Tausska [55]. Inoltre, queste matrici sono semi-stabili (e quindi le inverse dei negativi di queste matrici sono non negative), risultando nella produzione di procedure ricorsive stabili nell'implementazione numerica dell'algoritmo.
 
-\begin{corollario}
-    Per $i \geq L$  vale la seguente formula
-    \begin{equation}
-        \alpha_i = \alpha_L R^{i-L}
-    \end{equation}
-    dove
-    \begin{equation}
-        \alpha_L = \alpha_0 \prod_{l=1}^L R_l
-    \end{equation}
-\end{corollario}
-
-\subsection{Computation of the Performance Measures of the System}
-Per studiare il modello di coda in questione qualitativamente e confrontarlo con la corrispondente coda classica MAP/M/1 per valutare l'impatto del processo di reclutamento, dobbiamo sviluppare alcune misure di performance chiave. Di seguito sono elencate alcune di queste insieme alle loro formule: \\
-
-\textsc{Guarda paper, troppo lungo}
+% \begin{corollario}
+%     Per $i \geq L$  vale la seguente formula
+%     \begin{equation}
+%         \alpha_i = \alpha_L R^{i-L}
+%     \end{equation}
+%     dove
+%     \begin{equation}
+%         \alpha_L = \alpha_0 \prod_{l=1}^L R_l
+%     \end{equation}
+% \end{corollario}
 
 \clearpage
 
 \section{GI/M/1 Approach}
 
-In questa sezione, presentiamo brevemente come analizzare il sistema di coda in studio utilizzando code di tipo GI/M/1 a tempo continuo. Tenendo traccia del numero di clienti in attesa nella coda insieme allo stato del server principale (occupato o libero) e allo stato del server secondario (non presente o presente con un numero specificato di clienti assegnati), possiamo studiare il modello come una CTMC di tipo GI/M/1 come segue. \vspace*{0.4cm}
+In questa sezione, presentiamo brevemente come analizzare il sistema di coda in studio utilizzando code di tipo GI/M/1 a tempo continuo. Una catena di Markov di tipo GI/M/1 è un processo stocastico che modella il comportamento di un sistema di coda con un singolo server. Il nome GI/M/1 sta per "General Inter-arrival time distribution", "Markovian service time distribution", e "one server". Analizziamo cosa significa ognuno di questi termini:
+
+\begin{itemize}
+    \item General inter-arrival time distribution (GI): si riferisce alla distribuzione del tempo tra gli arrivi dei clienti alla coda. Il tempo tra gli arrivi viene modellato come una variabile casuale con una certa distribuzione di probabilità, che può essere qualsiasi distribuzione, non necessariamente una distribuzione esponenziale.
+
+    \item Markovian service time distribution (M): si riferisce alla distribuzione dei tempi di servizio per ciascun cliente, che viene assunta essere un processo di Markov. In altre parole, il tempo di servizio per un cliente dipende solo dallo stato del sistema quando il cliente arriva, e non da stati precedenti.
+
+    \item One server (1): si riferisce al fatto che c'è un solo server nel sistema, e che solo un cliente alla volta può essere servito.
+\end{itemize}
+
+Insieme, questi tre componenti costituiscono le caratteristiche fondamentali di una catena di Markov di tipo GI/M/1, che è un tipo di modello di coda. Tenendo traccia del numero di clienti in attesa nella coda insieme allo stato del server principale (occupato o libero) e allo stato del server secondario (non presente o presente con un numero specificato di clienti assegnati), possiamo studiare il modello come una CTMC di tipo GI/M/1 come segue. \vspace*{0.4cm}
+
+\paragraph{Cosa sono i livelli?} In una catena di Markov a tempo continuo (CTMC), il "livello" rappresenta uno stato del sistema. Ogni stato del sistema è associato a un certo livello, che può essere rappresentato da un numero intero o da un altro tipo di identificatore univoco. Nella CTMC, il sistema evolve attraverso una sequenza di transizioni da uno stato a un altro. Ogni transizione avviene con una certa probabilità e ha un tasso di transizione associato. Il tasso di transizione rappresenta la frequenza con cui il sistema effettua una transizione da uno stato a un altro.
+I livelli sono utilizzati per descrivere le diverse configurazioni del sistema, ad esempio il numero di clienti in attesa in una coda, il numero di server in uso in un sistema informatico, il numero di pezzi in lavorazione in una linea di produzione, e così via. In una CTMC, i livelli possono essere finiti o infiniti, a seconda delle caratteristiche del sistema che si sta modellando. Inoltre, i livelli possono essere raggruppati in classi di equivalenza, dove tutti gli stati all'interno di una classe di equivalenza hanno la stessa probabilità di transizione verso qualsiasi altro stato all'interno della stessa classe. In sintesi, i livelli in una CTMC rappresentano gli stati del sistema e vengono utilizzati per descrivere le diverse configurazioni del sistema. Ogni livello ha un tasso di transizione associato che rappresenta la frequenza con cui il sistema effettua una transizione da uno stato a un altro. \\
 
 \noindent Definiamo come prima cosa lo spazio degli stati $\Omega$ del CTMC come:
+
 \begin{equation}
     \Omega = \{ (i,j,k) ~ : ~ i \geq 0, 0 \leq j \leq K, 1 \leq k \leq m \}
 \end{equation}
 In seguito, consideriamo $e_r$ come un vettore colonna con 1 nella posizione $r-esima$ e 0 altrove. Notare che quando necessario, indicheremo la dimensione tra parentesi. Ad esempio, $e(L + 1)$ indicherà un vettore colonna di 1 con dimensione $L+1$. La "T" che appare come pedice in un vettore o una matrice sta per la notazione di trasposizione. Quindi, $e^T$ indicherà un vettore riga di 1. \vspace*{0.4cm}
 
-\noindent Definiamo il livello $\textbf{i} = \{(i, j, k) : 0 \leq j \leq L, 1 \leq k \leq m\} = \{(\textbf{i}, 0), \dots, (\textbf{i}, L)\}, i \geq 0$. Notare che il livello $(\textbf{i},\textbf{j})$ indica che il server principale è occupato (a patto che $i>0$), ci sono $i-1$ clienti in attesa nella coda principale, il server secondario (a patto che $j>0$) è occupato e il processo di arrivo si trova in varie fasi. Il livello $(\textbf{0},\textbf{0})$ corrisponde al sistema inattivo con il processo MAP in una delle $m$ fasi. Il generatore $\widetilde{Q}$ della CTMC che governa il sistema in studio è dato da:
+\noindent Definiamo il livello
+$$\textbf{i} = \{(i, j, k) : 0 \leq j \leq L, 1 \leq k \leq m\} = \{(\textbf{i}, 0), \dots, (\textbf{i}, L)\}, i \geq 0$$
+Notare che il livello $(\textbf{i},\textbf{j})$ indica che il server principale è occupato (a patto che $i>0$), ci sono $i-1$ clienti in attesa nella coda principale, il server secondario (a patto che $j>0$) è occupato e il processo di arrivo si trova in varie fasi. Il livello $(\textbf{0},\textbf{0})$ corrisponde al sistema inattivo con il processo MAP in una delle $m$ fasi. Il generatore $\widetilde{Q}$ della CTMC che governa il sistema in studio è dato da:
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\textwidth]{FcngTm3.png}
