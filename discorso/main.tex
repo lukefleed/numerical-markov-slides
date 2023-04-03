@@ -50,7 +50,7 @@
 
 \subsection{Queueing Theory}
 
-I modelli di coda sono utilizzati per rappresentare sistemi di risorse, tradizionalmente chiamati "server", che devono essere utilizzati da diversi utenti, chiamati "clienti". La terminologia deriva da applicazionu come gli sportelli bancari, le reception degli hotel, i caselli autostradali, e così via, dove i clienti effettivamente si mettono in coda finché non vengono serviti da un dipendente. Tuttavia, la teoria delle code viene utilizzata in contesti molto più diversi. \vspace*{0.4cm}
+I modelli di coda sono utilizzati per rappresentare sistemi di risorse, tradizionalmente chiamati "server", che devono essere utilizzati da diversi utenti, chiamati "clienti". La terminologia deriva da applicazioni come gli sportelli bancari, le reception degli hotel, i caselli autostradali, e così via, dove i clienti effettivamente si mettono in coda finché non vengono serviti da un dipendente. \vspace*{0.4cm}
 
 \noindent Le code semplici consistono di un solo server che attende un solo cliente alla volta, in ordine di arrivo, con l'aggiunta dell'assunzione che i clienti siano indefinitamente pazienti. Si assume che il tempo sia discretizzato in intervalli di lunghezza fissa, che un numero casuale di clienti si unisca al sistema durante ogni intervallo e che il server rimuova un cliente dalla coda alla fine di ogni intervallo, se presente. Definendo $\alpha_n$ come il numero di nuovi arrivi durante l'intervallo $[n - 1, n)$ e $X_n$ come il numero di clienti nel sistema al tempo $n$, abbiamo
 
@@ -73,24 +73,25 @@ I modelli di coda sono utilizzati per rappresentare sistemi di risorse, tradizio
     \end{pmatrix}
 \end{equation}
 
-\noindent dove $q_i$ è la probabilità $P[\alpha=i]$ che $i$ nuovi clienti che entrino in coda durante un intervallo di un'unutà di tempo, mentre $\alpha$ denota ognuna delle possibili distribuzioni di $\alpha_n$ identicamente distribuite. Le catene di Markov aventi matrice di transizione della forma
+\noindent dove $q_i$ è la probabilità $P[\alpha=i]$ che $i$ nuovi clienti che entrino in coda durante un intervallo di un'unutà di tempo, mentre $\alpha$ denota ognuna delle possibili distribuzioni di $\alpha_n$ identicamente distribuite.
+% Le catene di Markov aventi matrice di transizione della forma
 
-\begin{equation}
-    P = \begin{pmatrix}
-        B1 & B_2 & B_3 & B_4 & \ldots \\
-        A_0 & A_1 & A_2 & A_3 & \ddots \\
-            & A_0 & A_1 & A_2 & \ddots \\
-        0   &     & \ddots & \ddots & \ddots
-    \end{pmatrix}
-\end{equation}
+% \begin{equation}
+%     P = \begin{pmatrix}
+%         B1 & B_2 & B_3 & B_4 & \ldots \\
+%         A_0 & A_1 & A_2 & A_3 & \ddots \\
+%             & A_0 & A_1 & A_2 & \ddots \\
+%         0   &     & \ddots & \ddots & \ddots
+%     \end{pmatrix}
+% \end{equation}
 
-\noindent dove $A_i, B_{i+1}, i \geq 0$ sono matrici non negative di dimensione $k \times k$ sono dette M/G/1-type Markov Chains e sono utilizzate per modellare svariati problemi di coda.
+% \noindent dove $A_i, B_{i+1}, i \geq 0$ sono matrici non negative di dimensione $k \times k$ sono dette M/G/1-type Markov Chains e sono utilizzate per modellare svariati problemi di coda.
 
 \subsection{Obiettivi del paper}
 
 \noindent Il paper presenta un nuovo approccio per migliorare i modelli di coda con l'utilizzo di server secondari temporanei, reclutati tra i clienti stessi. Questi server secondari sono disponubili solo temporaneamente e fornuranno servizi in gruppi di diverse dimensionu. Dopo aver servito esattamente un gruppo, i server secondari lasceranno il sistema, permettendo ai clienti di proseguire le loro attività senza essere trattenuti. Il contributo principale del paper è l'introduzione del concetto di reclutamento di server secondari da parte dei clienti, in modo da aiutare il sistema. I risultati numerici indicano che il modello proposto funziona meglio del modello di coda classico corrispondente. Questo può aiutare i responsabili del sistema a reclutare server secondari quando necessario per migliorare le prestazionu del sistema. \\
 
-\noindent Il paper analizza anche altri approcci di modelli di coda con server secondari presenti in letteratura. Tuttavia, andremo a considerare le due seguenti caratteristiche che sono intrinseche in alcunu sistemi del mondo reale e non sono state studiate in passato: (i) un server secondario verrà assegnato ad un gruppo (che non supererà una soglia finuta prestabilita); questo server offrirà i servizi uno alla volta; e una volta che tutti i clienti assegnati sono stati serviti, il server secondario lascerà anche il sistema; e (ii) con una certa probabilità, un cliente servito da un server secondario diventa insoddisfatto e quindi torna al sistema principale per ottenere un nuovo servizio.
+\noindent Il paper si concentra in particolare sulle due seguenti caratteristiche che sono intrinseche in alcuni sistemi del mondo reale e non sono state studiate in passato: (i) un server secondario verrà assegnato ad un gruppo (che non supererà una soglia finita prestabilita); questo server offrirà i servizi uno alla volta; e una volta che tutti i clienti assegnati sono stati serviti, il server secondario lascerà anche il sistema; e (ii) con una certa probabilità, un cliente servito da un server secondario diventa insoddisfatto e quindi torna al sistema principale per ottenere un nuovo servizio.
 
 \clearpage
 
@@ -110,17 +111,24 @@ Il generatore irriducibile del MAP è dato da $D_0 + D_1$. Sia $\delta$ il vetto
 \begin{equation} \label{eq:invariant}
     \delta (D_0 + D_1) = \textbf{0}, \qquad \delta e = 1
 \end{equation}
-Dove d'ora in poi, $e$ è il vettore colonna di tutti gli elementi 1 con appropriata dimensione mentre $\textbf{0}$ rappresenta il vettore riga di tutti zeri con dimensioni appropriate. La matrice $D_0$ governa le transizionu corrispondenti al generatore sottostante che non produce arrivi, mentre la matrice  $D_1$ governa quelle transizioni corrispondenti agli arrivi nel sistema. \\
+La matrice $D_0$ governa le transizioni corrispondenti al generatore sottostante che non produce arrivi ed è una matrice non-singolare con elementi diagonali negativi e elementi non-diagonali non negativi. Mentre la matrice  $D_1$ governa quelle transizioni corrispondenti agli arrivi nel sistema ed è una matrice non-negativa. Andiamo a vedere adesso 3 proprietà fondamentali di un MAP.
+% Dove d'ora in poi, $e$ è il vettore colonna di tutti gli elementi 1 con appropriata dimensione mentre $\textbf{0}$ rappresenta il vettore riga di tutti zeri con dimensioni appropriate. \\
 
-\noindent Il rate medio di arrivi $(\lambda)$, la varianza degli tempi internu di arrivo
-$(\sigma^2)$ e la correlazione $(\rho_c)$ tra due successivi tempi internu di arrivo sono dati da
+\paragraph{Rate medio di arrivi}
+    $$\lambda = \delta D_1 e$$
+    rappresenta il numero medio di arrivi che si verificano nell'unità di tempo. Se si considera il caso in cui il processo è Poissoniano, allora il tasso di arrivo è costante; tuttavia, in un processo MAP, il tasso di arrivo può variare nel tempo a seconda delle condizioni del sistema.
 
-\begin{equation}
-    \lambda = \delta D_1 e, \qquad \sigma^2 = \frac{2}{\lambda} \delta (-D_0)^{-1} e - \frac{1}{\lambda^2}, \qquad \rho_c = \frac{\lambda \delta (-D_0)^{-1} D_1 (-D_0)^{-1} e - 1}{2 \lambda \delta (-D_0)^{-1} e - 1}
-\end{equation}
-Il sistema ha un singolo server che offre servizi in modo FCFS. Questo server sarà chiamato server principale. I tempi di servizio sono esponenziali con parametro $\mu_1$. Con probabilità $p, 0 \leq p \leq 1$, un cliente servito può essere reclutato (o optato dal punto di vista del cliente servito) per servire altri clienti in attesa nel sistema (assumendo che la dimensione della coda sia positiva) a condizione che non ci sia già un altro server secondario che sta servendo. Un tale server è chiamato server secondario. In altre parole, una reclutamento avviene solo quando c'è almeno un cliente in attesa nella coda e quando non c'è altro server secondario presente nel sistema. Pertanto, il sistema può avere al massimo due server in qualsiasi momento. Si noti che con probabilità $q = 1 - p$, il cliente servito, che può diventare il server secondario, non accetta di farlo e lascia il sistema. Quando viene reclutato un server secondario, il server verrà assegnato a un gruppo di, diciamo, i clienti, dove $i = \min \{\text{numero nella coda}, L\}$, dove $L$ è un pre-determinato positivo finuto intero. In altre parole, $1 \leq L < \infty$. Il server secondario offrirà servizi ai clienti del gruppo uno alla volta e i tempi di servizio sono distribuiti in modo esponenziale con parametro $\mu_2$. Un cliente che riceve un servizio da un server secondario potrebbe non essere soddisfatto del servizio ricevuto e richiedere di essere servito di nuovo con probabilità $\nu$, $0 \leq \nu \leq 1$, e con probabilità $\bar \nu = 1 - \nu$ lascerà il sistema. I clienti insoddisfatti sono reinseriti nel sistema. Una volta che il server secondario ha finuto di servire tutti i clienti assegnati, il sistema rilascerà questo server.
-Si noti che prendendo $p = 0$ (in questo caso $\nu$ non ha alcun ruolo e può essere ignorato), ottenuamo
-il modello di coda a singolo server classico. Questo caso viene utilizzato solo come verifica dell'accuratezza nei calcoli numerici e non è altrimenti interessante. Il caso in cui $\nu = 1$ non è interessante poiché in questo caso ognu cliente servito da un server secondario viene reinserito nel sistema e l'assunzione di server secondari rallenta solo il sistema nell'offrire servizi.
+\paragraph{Varianza dei tempi di arrivo}
+    $$ \sigma^2 = \frac{2}{\lambda} \delta (-D_0)^{-1} e - \frac{1}{\lambda^2} $$
+    rappresenta la variazione dei tempi di interarrivo rispetto alla media. In altre parole, la varianza misura quanto i tempi di interarrivo si discostano dalla media. Se la varianza è bassa, i tempi di interarrivo tendono ad essere più uniformi e costanti, mentre se la varianza è alta, i tempi di interarrivo tendono ad essere più irregolari e meno prevedibili
+
+\paragraph{Correlazione tra due successivi tempi di arrivo}
+    $$ \rho_c = \frac{\lambda \delta (-D_0)^{-1} D_1 (-D_0)^{-1} e - 1}{2 \lambda \delta (-D_0)^{-1} e - 1} $$
+    indica quanto il tempo di arrivo successivo dipende dal tempo di arrivo precedente. In altre parole, la correlazione misura il grado di dipendenza tra due eventi successivi. Se la correlazione è alta, il tempo di arrivo successivo dipende fortemente dal tempo di arrivo precedente; se la correlazione è bassa o nulla, il tempo di arrivo successivo è indipendente dal tempo di arrivo precedente. La correlazione è spesso misurata attraverso il coefficiente di correlazione $\rho_c$, che varia tra -1 e 1, dove i valori positivi indicano una correlazione positiva (cioè, l'aumento del tempo di arrivo precedente corrisponde all'aumento del tempo di arrivo successivo) e i valori negativi indicano una correlazione negativa (cioè, l'aumento del tempo di arrivo precedente corrisponde alla diminuzione del tempo di arrivo successivo). Una correlazione pari a zero indica che non c'è dipendenza tra i tempi di arrivo successivi. \\
+
+
+\noindent Il sistema ha un singolo server che offre servizi in modo FCFS. Questo server sarà chiamato server principale. I tempi di servizio sono esponenziali con parametro $\mu_1$. Con probabilità $p, 0 \leq p \leq 1$, un cliente servito può essere reclutato (o optato dal punto di vista del cliente servito) per servire altri clienti in attesa nel sistema (assumendo che la dimensione della coda sia positiva) a condizione che non ci sia già un altro server secondario che sta servendo. Un tale server è chiamato server secondario. In altre parole, una reclutamento avviene solo quando c'è almeno un cliente in attesa nella coda e quando non c'è altro server secondario presente nel sistema. Pertanto, il sistema può avere al massimo due server in qualsiasi momento. Si noti che con probabilità $q = 1 - p$, il cliente servito, che può diventare il server secondario, non accetta di farlo e lascia il sistema. Quando viene reclutato un server secondario, il server verrà assegnato a un gruppo di, diciamo, i clienti, dove $i = \min \{\text{numero nella coda}, L\}$, dove $L$ è un pre-determinato positivo finito intero. Il server secondario offrirà servizi ai clienti del gruppo uno alla volta e i tempi di servizio sono distribuiti in modo esponenziale con parametro $\mu_2$. Un cliente che riceve un servizio da un server secondario potrebbe non essere soddisfatto del servizio ricevuto e richiedere di essere servito di nuovo con probabilità $\nu$, $0 \leq \nu \leq 1$, e con probabilità $\bar \nu = 1 - \nu$ lascerà il sistema. I clienti insoddisfatti sono reinseriti nel sistema. Una volta che il server secondario ha finito di servire tutti i clienti assegnati, il sistema rilascerà questo server.
+Si noti che prendendo $p = 0$ (in questo caso $\nu$ non ha alcun ruolo e può essere ignorato), otteniamo il modello di coda a singolo server classico. Questo caso viene utilizzato solo come verifica dell'accuratezza nei calcoli numerici e non è altrimenti interessante. Il caso in cui $\nu = 1$ non è interessante poiché in questo caso ogni cliente servito da un server secondario viene reinserito nel sistema e l'assunzione di server secondari rallenta solo il sistema nell'offrire servizi.
 
 \begin{figure}[h]
     \centering
@@ -135,13 +143,22 @@ Analizzeremo il modello di coda in studio in stato stazionario. L'analisi può e
 
 \subsection{Description of the QBD Process Governing the System and Its Generator}
 
+\paragraph{CTMC:} Ricordiamo velocemente la definizione di Catena di Markov a tempo continuo (CTMC). Il processo stocastico $\{X(t) : t \in \R^+\}$ in uno spazio di stati al più numberabile $E$ è un processo di Markov omogeneo se
+$$ P[X(t+s) = j ~ | ~ X(u) : 0 \leq u \leq t] =  P[X(t+s) = j ~ | X(t)]$$
+e se
+$$  P[X(t+s) = j ~ | ~ X(t) = i] =  P[X(s) = j ~ | ~ X(0) = i]$$
+per tutti gli stati $i, j \in E$, per tutti i tempi $t \geq 0$ e per tutti gli intervalli di tempo $s \geq 0$. \\
+
+
 Un \emph{quasi-death-birth process} (QBD) è un caso particolare di una catena di Markov a tempo continuo (CTMC) che può essere utilizzato per modellare certi tipi di sistemi di coda. Ci sono due tipi di eventi che possono verificarsi: eventi di morte e eventi di nascita.
 \begin{itemize}
     \item Un evento di morte avviene quando un cliente lascia il sistema (i.e finisce di essere servito e se ne va)
     \item Un evento di nascita avviene quando un nuovo cliente entra nel sistema
 \end{itemize}
 
-Un modo per combinare le strutture delle markov chains di tipo M/G/1 e G/M/1, è quello che imporre le restrizioni di entrambe, in modo che il processo possa cambiare di un livello alla volta, diventando così skip-free in entrambe le direzioni. Queste catene di Markov sono chiamate processi quasi-nascita-e-morte (QBD) e la loro matrice di transizione è
+
+Un modo per creare questo tipo di processi è quello di "combinare" le strutture delle markov chains di tipo M/G/1 e G/M/1, imponendo le restrizioni di entrambe, in modo che il processo possa cambiare di un livello alla volta, diventando così skip-free in entrambe le direzioni.
+Si potrebbe pensare al QBD come un semplice lista lineare in evoluzione: ogni livello è un nodo nella lista ed il processo è autorizzato a muoversi da un nodo ad uno dei suoi due vicini. Queste catene di Markov sono chiamate processi quasi-nascita-e-morte (QBD) e la loro matrice di transizione è
 \begin{equation*}
     P=
     \begin{pmatrix}
@@ -153,20 +170,26 @@ Un modo per combinare le strutture delle markov chains di tipo M/G/1 e G/M/1, è
     \end{pmatrix}
     ,\quad A_{-1}, A_0, A_1, \in \mathbb{R}^{m \times m}, \quad B_0 \in \mathbb{R}^{m \times m}
 \end{equation*}
-matrici non negativa tali che $A_{-1} + A_0 + A_1$ e $B_0 + B_1$ sono stocastiche. Osserviamo che un QBD può essere visto come una catena di Markov di tipo M/G/1 ma anche come una catena di Markov di tipo G/M/1. Quindi l generatore infinitesimale di un processo QBD è una matrice tridiagonale a blocchi infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo.
-%   Dato $Q$ questo generatore infinitesimale, l'elemento $q_{ij}, (i \neq j)$ denota il rate di partenza da uno stato $i$ e di arrivo in uno stato $j$. Gli elementi diagonali invece sono definiti come segue:
-% $$ q_{ii} = -\sum_{j\neq i} q_{ij} $$
+dove gli elementi sono matrici non negativa tali che $A_{-1} + A_0 + A_1$ e $B_0 + B_1$ sono stocastiche. Quindi il generatore infinitesimale di un processo QBD è una matrice tridiagonale a blocchi infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo. Osserviamo che un QBD può essere visto come una catena di Markov di tipo M/G/1 ma anche come una catena di Markov di tipo G/M/1. Vediamo come sono fatti gli elementi di questo generatore infinitesimale.
 
-Supponiamo che, al tempo $t\geq 0$, indichiamo:
+\paragraph{Elementi Diagonali} Per tutte le $i \neq j$, $Q_{i,j}$ è il rate istantaneo di transizione dallo stato $i$ allo stato $j$. Ovvero, $Q_{i,j}h$ è la probabilità condizionale che $X(t + h) = j$, data la condizione che $X(t) = i$, per un intervallo di tempo $h$ abbastanza piccolo.
+$Q_{i,j}$ è non negativo e strettamente positivo se è possibile spostarsi da $i$ a $j$ in un solo salto.
+
+\paragraph{Elementi non Diagonali}  Gli elementi diagonali sono tali che
+$$Q_{i,i} = - \sum_{j \in E, j \neq i} Q_{i,j}$$
+Possiamo vederla in questo modo: il processo rimane in ogni stato durante un intervallo di tempo esponenzialmente distribuito, con parametro $q_i = -Q_{i,i}$, per ogni $i$, prima d.i saltare allo stato successivo. Se $Q_{i,i} = 0$, allora $Q_{i,j} = 0$ per tutti $j$, ciò significa che $i$ è uno stato assorbente: una volta raggiunto, il processo non cambia più e rimane in quel stato per sempre. \\
+
+\noindent Supponiamo adesso che, al tempo $t\geq 0$, indichiamo:
 \begin{itemize}
     \item il numero di clienti nel sistema come $i_t\geq 0$;
     \item il numero di clienti in servizio al server secondario come $n_t\in\{0,\ldots,\min(i_t,L)\}$ (notare che quando $n_t=0$, il sistema non ha un server secondario);
     \item lo stato del processo sottostante del MAP che descrive gli arrivi dei clienti come $\xi_t=1,\ldots,m$.
 \end{itemize}
-Allora, il processo stocastico $\{\zeta_t=(i_t,n_t,\xi_t),,t\geq 0\}$ che descrive il comportamento del modello in esame è un CTMC regolare e irriducibile.
-% Il generatore infinitesimale di un processo QBD è una matrice tridiagonale a blocchi infinita che descrive la probabilità di transizione del sistema da uno stato $i$ ad uno stato $j$, in un dato istante di tempo $t$, attraverso un evento infinitesimo
+Allora, il processo stocastico $\{\zeta_t=(i_t,n_t,\xi_t),,t\geq 0\}$ che descrive il comportamento del modello in esame è una CTMC regolare e irriducibile. Una catena regolare garantisce che il processo raggiungerà uno stato stazionario, cioè un equilibrio nel lungo periodo. Invece, l'irriducibilità garantisce che il processo non si dividerà in due o più sottoprocessi che non comunicano tra loro. \\
 
-Enumerando gli stati del CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico e indicando con $i$ il livello, per $i\geq 0$, l'insieme di stati come $\{(i,n,k):0\leq n\leq \min(i,L),,1\leq k\leq m\}$, il generatore (infinitesimale), $Q$, di questo CTMC è dato dal seguente teorema.
+\noindent Enumerando gli stati del CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico e indicando con $i$ il livello, per $i\geq 0$, l'insieme di stati come
+$$\{(i,n,k):0\leq n\leq \min(i,L),,1\leq k\leq m\}$$
+il generatore (infinitesimale), $Q$, di questo CTMC è dato dal seguente teorema.
 
 \clearpage
 \begin{teorema}
@@ -206,11 +229,17 @@ Enumerando gli stati del CTMC, $\{\zeta_t,,t\geq 0\}$, in ordine lessicografico 
 
 \subsection{Ergodicity Condition of the QBD Process}
 
-Siamo interessati a studiare l'ergodicità, una proprietà di un processo casuale in cui la sua media nel tempo è uguale alla sua media nel probabilità spazio. Formalmente in una catena di Markov si dice \emph{ergodica} se il limite
+\paragraph{Erogidicità a parole} In un processo ergodico la sua distribuzione di probabilità si stabilisce su un valore costante a lungo termine, indipendentemente dalle condizioni iniziali.
+Nel caso di un QBD, la condizione di ergodicità è importante perché determina se il sistema raggiungerà uno stato stazionario o meno. Se il processo è ergodico, allora esiste un unico stato stazionario e il sistema raggiungerà questo stato a lungo termine. D'altra parte, se il processo non è ergodico, allora non esiste uno stato stazionario e il sistema non raggiungerà mai una distribuzione di probabilità costante a lungo termine. Le condizioni di ergodicità, in generale, sono le seguenti:
+\begin{itemize}
+    \item Il processo deve essere irriducibile. Ciò significa che ogni stato del processo può essere raggiunto da ogni altro stato con una certa probabilità in un numero finito di passi.
+    \item Il processo deve essere aperiodico. Ciò significa che non esiste un ciclo di stati che il processo attraversa regolarmente.
+\end{itemize}
+\paragraph{Formalismo}  Siamo interessati a studiare l'ergodicità, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lungo periodo di tempo, indipendentemente dallo stato iniziale $i$. Formalmente in una catena di Markov si dice \emph{ergodica} se il limite
 $$ \pi(j) = \lim_{n\to \infty} \mathbb{P}_i \{X_n = j\} $$
 esiste per ogni stato $j$ e non dipende dallo stato iniziale $i$. Questo può anche essere scritto come
 $$ \pi(j) = \lim_{n \to \infty} (P^n)_{i,j} $$
-In altre parole, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lungo periodo di tempo è indipendente dallo stato iniziale $i$.
+Andiamo a vedere come si può esprimere questa proprietà nel nostro caso di studio
 
 \begin{teorema}
     Il processo stocastico CTMC $\{\zeta_t,,t\geq 0\}$ è ergodico se e solo se vale la seguente disuguaglianza:
@@ -220,7 +249,7 @@ In altre parole, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lung
     \end{equation}
 
     \begin{proof}
-        È noto, grazie all'approccio matriciale-geometrico di Neuts (vedi, ad esempio, il riferimento [37]), che il criterio per l'ergodicità del QBD con il generatore di forma data in (3) è la soddisfazione dell'ineguaglianza:
+        È noto, grazie all'approccio matriciale-geometrico di Neuts, che il criterio per l'ergodicità del QBD con il generatore di forma vista prima, coincide con la soddisfazione dell'ineguaglianza:
         \begin{equation}\label{eq:ergodicity}
             y Q^- e > y Q^+e
         \end{equation}
@@ -230,7 +259,7 @@ In altre parole, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lung
         \end{equation}
         Si può inoltre verificare facilmente che
         \begin{equation}\label{eq:bigotimes}
-            Q^- + Q^0 + Q^+ = I_{L+1} \bigotimes (D_0 + D_1) + S \bigotimes I_{m}
+            Q^- + Q^0 + Q^+ = I_{L+1} \otimes (D_0 + D_1) + S \otimes I_{m}
         \end{equation}
         dove
         \begin{figure}[h!]
@@ -239,7 +268,7 @@ In altre parole, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lung
         \end{figure}
         Usando la regole del mixed product per il prodotto di Kronecker, ed usando \ref{eq:invariant} si verifica che la soluzione del sistema di equazioni lineari è
         \begin{equation}
-            y = x \bigotimes \delta
+            y = x \otimes \delta
         \end{equation}
         dove $\delta$ è come definita in \ref{eq:invariant} ed $x$ è la soluzione del sistema
         \begin{equation}\label{eq:system}
@@ -270,27 +299,43 @@ In altre parole, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lung
     che corrisponde all'espressione \ref{eq:xi} vista in precedenza.
 \end{osservazione}
 
-\subsection{Computation of the Performance Measures of the System}
+\subsection{Probabilità Stazionaria}
 
-Sotto l'assunzione che la condizione di ergodicità data dalla relazione \ref{eq:ergodicity} sia valida, esistono le seguenti probabilità stazionarie degli stati del CTMC $\zeta_t, t \geq 0$:
+In un processo di nascita e morte a coda (QBD), lo stato stazionario rappresenta una distribuzione di probabilità sulla configurazione di stato del sistema che si raggiunge nel lungo periodo, quando il processo raggiunge uno stato di equilibrio. Il vettore invariante di probabilità (o distribuzione stazionaria) è un vettore di probabilità che rappresenta lo stato stazionario del sistema. In particolare, se il processo di nascita e morte a coda è regolare e irriducibile, allora esiste un unico vettore invariante di probabilità, che rappresenta la distribuzione di probabilità stazionaria del sistema.  Lo stato stazionario del QBD rappresenta il comportamento asintotico del sistema, mentre il vettore invariante di probabilità rappresenta la distribuzione di probabilità del sistema in equilibrio. Sotto l'assunzione che la condizione di ergodicità data dalla relazione \ref{eq:ergodicity} sia valida, esistono le seguenti probabilità stazionarie degli stati del CTMC $\zeta_t, t \geq 0$:
 \begin{equation}
     \pi(i,n,\zeta) = \lim_{t \to \infty} P\{i_t = i, n_t = n, \zeta_t = \zeta\}, ~ i \geq 0, \quad n \in \{0, 1, \dots , \min\{i,L\}\}, \quad \zeta \in \{0, \dots, n\}
 \end{equation}
-Consideriamo i vettori riga delle probabilità di stato stazionario $\pi_i$ come segue: il vettore riga $\pi(i,n)$ è dato da $\pi(i,n) = (\pi(i,n,1), ..., \pi(i,n,m))$ e
+La prima formula rappresenta la probabilità che il processo rimanga nello stato $(i,n,\xi)$ per un tempo sufficientemente grande. Qui, $i$ rappresenta lo stato del processo principale, $n$ rappresenta il numero di clienti nel server secondario, e $\xi$ rappresenta lo stato del sistema ausiliario. La probabilità stazionaria $\pi(i,n,\xi)$ è definita come il limite della probabilità che il processo si trovi nello stato $(i,n,\xi)$ al tempo $t$, quando $t$ tende all'infinito. In altre parole, se il processo rimane in funzione per un tempo sufficientemente grande, la probabilità di trovarlo in uno stato particolare diventa indipendente dal tempo trascorso. Questa probabilità stazionaria rappresenta una distribuzione di equilibrio del processo. In questo caso, visto che la condizione di ergodicità è valida, il processo ha un'unica distribuzione di equilibrio, rappresentata dalle probabilità stazionarie degli stati del processo principale, che sono i vettori riga $\pi_i$ \\
+
+\noindent Andiamo a definire i vettori riga delle probabilità di stato stazionario $\pi_i$ come segue: definiamo $\pi(i,n) = (\pi(i,n,1), ..., \pi(i,n,m))$ e allora otteniamo
 \begin{equation}
     \pi_i = (\pi(i,0), ..., \pi(i, \min \{i,L\})), \quad i \geq 0
 \end{equation}
-È ben noto che i vettori di probabilità stazionari $\pi_i, i \geq 0$, soddisfano il sistema di equazioni algebriche lineari (equazioni di equilibrio):
+Il vettore riga $\pi_i$ rappresenta le probabilità stazionarie degli stati del processo principale, sotto l'assunzione che la condizione di ergodicità sia valida. In particolare, $\pi_i$ è un vettore riga di lunghezza $\min{i,L}+1$, dove $L$ rappresenta il numero massimo di clienti che possono essere presenti nel server secondario. Ogni elemento del vettore $\pi_i$ rappresenta la probabilità stazionaria che il processo principale si trovi in uno stato specifico, ovvero con $n$ clienti nel sistema, dove $n$ varia da $0$ a $\min{i,L}$. In altre parole, il vettore $\pi_i$ descrive la distribuzione di equilibrio dei clienti nel sistema in base allo stato del processo principale. Questa distribuzione di equilibrio è determinata dalle probabilità stazionarie degli stati del processo principale \\
+
+\noindent È ben noto che i vettori di probabilità stazionari $\pi_i, i \geq 0$, soddisfano il sistema di equazioni algebriche lineari (equazioni di equilibrio):
 \begin{equation}
     (\pi_0, \pi_1, \pi_, \dots)Q = 0 \qquad (\pi_0, \pi_1, \pi_, \dots)e = 1
 \end{equation}
-dove $Q$ è la matrice di transizione del CTMC $\zeta_t, t \geq 0$ e $e$ è il vettore colonna di tutti gli elementi $1$. Vediamo ora come trovare la soluzione del problema del calcolo della distribuzione di equilibrio in questo contesto. In particolare, vediamo la soluzione per i casi in cui le transizioni della QBD non dipendono dal livello in cui ci si trova e per i casi in cui le transizioni dipendono dal livello. Nel primo caso, le probabilità stazionarie vengono trovate in una forma matrice-geometrica. Nel secondo caso, invece, le probabilità stazionarie dei livelli di confine, in cui le transizioni dipendono dal livello, vengono direttamente trovate come soluzione del sistema di equazioni lineari algebriche. Tuttavia, se il numero di livelli di confine è elevato (cosa che avviene nel modello considerato se L è grande), questo sistema può diventare molto grande. \\
+dove $Q$ è la matrice di transizione del CTMC $\zeta_t, t \geq 0$ e $e$ è il vettore colonna di tutti gli elementi $1$.
 
-Gli autori presentano quindi un algoritmo che sfrutta la struttura tridiagonale a blocchi, ma dipendente dal livello, del generatore per i livelli inferiori a L+1, in modo da risolvere più efficientemente il sistema di equazioni lineari algebriche quando il numero di livelli di confine è elevato. \\
+\paragraph{Cosa vuol dire?} In particolare, la prima equazione richiede che il prodotto tra il vettore di probabilità stazionarie e la matrice di transizione sia uguale al vettore nullo. Questo significa che, una volta raggiunto l'equilibrio, il processo rimarrà in equilibrio per sempre, poiché il prodotto di una matrice di transizione per un vettore di probabilità stazionarie restituisce un nuovo vettore di probabilità stazionarie. La seconda equazione richiede che la somma degli elementi del vettore di probabilità stazionarie sia uguale a $1$, ovvero la somma delle probabilità degli stati deve essere uguale a $1$. Questo significa che il vettore di probabilità stazionarie rappresenta una distribuzione di probabilità valida sullo spazio degli stati del CTMC. \\
+
+\paragraph{Come trovare le soluzioni?}Per trovare la soluzione del problema del calcolo della distribuzione di equilibrio in un processo QBD, esistono due casi principali da considerare:
+\begin{itemize}
+    \item Quando le transizioni della QBD non dipendono dal livello in cui ci si trova
+    \item Quando le transizioni della QBD dipendono dal livello in cui ci si trova
+\end{itemize}
+Nel primo caso, le probabilità stazionarie vengono trovate grazie alla forma matriciale geometrica. In particolare, la matrice di transizione $Q$ del CTMC $\zeta_t$ può essere riscritta come $Q = I + P\tilde{Q}$, dove $P$ è la matrice di transizione della catena di Markov di livello $n_t$ e $\tilde{Q}$ è la matrice di transizione della catena di Markov di taglia $\xi_t$. In questo caso, la distribuzione di equilibrio $\pi_i$ può essere calcolata come $\pi_i = \pi_0 Q^i$, dove $\pi_0$ è il vettore iniziale di probabilità di stato. Nel secondo caso, le probabilità stazionarie dei livelli di confine, in cui le transizioni del QBD dipendono dal livello, vengono direttamente trovate come soluzione del sistema di equazioni lineari algebriche (equazioni di equilibrio) rappresentato da $(\pi_0, \pi_1, \pi_2, \dots)Q = 0$ e $(\pi_0, \pi_1, \pi_2, \dots)e = 1$, dove $Q$ è la matrice di transizione del CTMC $\zeta_t$ e $e$ è il vettore colonna di tutti gli elementi $1$. Tuttavia, se il numero di livelli di confine è elevato (cosa che avviene nel modello considerato se $L$ è grande), questo sistema può diventare molto grande e quindi può essere difficile da risolvere in modo efficiente. \vspace{0.5cm}
+
+\paragraph{Approccio matriciale-geometrico di Neuts}: L'approccio matriciale-geometrico di Neuts è un metodo utilizzato per analizzare i processi di nascita e morte a coda (QBD) mediante l'utilizzo di strumenti matematici e geometrici. Il metodo consiste nel rappresentare il sistema QBD come una successione di sottosistemi di dimensione ridotta, ognuno dei quali rappresenta uno stato di una coda o di una fase del sistema. Ogni sottosistema è rappresentato da una matrice di transizione, che descrive le probabilità di transizione da uno stato del sottosistema a un altro. Le matrici di transizione di ogni sottosistema sono quindi utilizzate per costruire una matrice di transizione globale, che rappresenta l'intero sistema QBD. La matrice globale è quindi utilizzata per calcolare le proprietà del sistema, come la distribuzione stazionaria, il tempo medio di soggiorno e la probabilità di coda. L'approccio matriciale-geometrico di Neuts utilizza inoltre una rappresentazione geometrica del sistema QBD, chiamata "diagramma di regime di equilibrio". Questo diagramma rappresenta il sistema come un insieme di reticoli, dove ogni reticolo rappresenta uno stato della coda o della fase. La dimensione dei reticoli rappresenta la dimensione del sottosistema associato allo stato corrispondente. Il diagramma di regime di equilibrio consente di visualizzare in modo intuitivo la struttura del sistema e di identificare le possibili traiettorie di transizione tra i vari stati del sistema. Inoltre, le proprietà del sistema, come la distribuzione stazionaria e il tempo medio di soggiorno, possono essere calcolate utilizzando metodi geometrici come il teorema di Jackson. L'approccio matriciale-geometrico di Neuts è un metodo potente per l'analisi dei sistemi QBD, in quanto consente di rappresentare il sistema in modo intuitivo e di calcolare le proprietà del sistema in modo efficiente utilizzando strumenti matematici e geometrici. \\
 
 \paragraph{Stati del QBD} In un processo di Markov con matrice di transizione QBD (Quasi-Birth-Death), le transizioni possono essere classificate in due categorie: dipendenti dal livello o indipendenti dal livello. Le transizioni indipendenti dal livello sono quelle che avvengono con la stessa probabilità in ogni stato del processo, senza dipendere dal livello corrente. Queste transizioni sono rappresentate nella matrice di transizione da diagonali e sottodiagonali costanti, che riflettono il fatto che la probabilità di passare da uno stato all'altro non dipende dallo stato corrente. Le transizioni dipendenti dal livello, al contrario, sono quelle che avvengono con probabilità differenti a seconda del livello in cui ci si trova. In altre parole, la probabilità di una transizione dipendente dal livello dipende dallo stato corrente. Queste transizioni sono rappresentate nella matrice di transizione da diagonali e sottodiagonali che variano con il livello, in modo da riflettere la dipendenza della probabilità di transizione dallo stato corrente. In sintesi, quando una matrice di transizione QBD ha transizioni indipendenti dal livello, la probabilità di transizione da uno stato all'altro non dipende dallo stato corrente. Quando, invece, le transizioni dipendono dal livello, la probabilità di transizione da uno stato all'altro dipende dallo stato corrente e quindi dal livello corrente del processo di Markov. \\
 
-Un livello di confine è un livello in cui le transizioni dipendono dal livello stesso. In altre parole, le probabilità di transizione da un livello di confine a un altro livello dipendono dal livello di partenza. Un esempio concreto di processo QBD con livelli di confine è un sistema di code in cui gli arrivi sono rappresentati come processi di Poisson e i servizi sono rappresentati come processi deterministici. In questo caso, i livelli di confine rappresentano il numero di clienti nel sistema che corrispondono a un cambio di regime, ad esempio, quando un nuovo server viene aperto o chiuso. Nel nostro caso, viene detto che per i livelli di confine, le probabilità stazionarie non possono essere trovate in modo diretto attraverso la matrice di transizione, ma devono essere calcolate come soluzione di un sistema di equazioni lineari algebriche. In particolare, viene sottolineato che se il numero di livelli di confine è grande, la soluzione di questo sistema può diventare complessa e richiedere l'utilizzo di algoritmi appositi per risolverlo in modo efficiente.
+\paragraph{Livello di confine} Un livello di confine è un livello in cui le transizioni dipendono dal livello stesso. In altre parole, le probabilità di transizione da un livello di confine a un altro livello dipendono dal livello di partenza. Un esempio concreto di processo QBD con livelli di confine è un sistema di code in cui gli arrivi sono rappresentati come processi di Poisson e i servizi sono rappresentati come processi deterministici. In questo caso, i livelli di confine rappresentano il numero di clienti nel sistema che corrispondono a un cambio di regime, ad esempio, quando un nuovo server viene aperto o chiuso. Nel nostro caso, viene detto che per i livelli di confine, le probabilità stazionarie non possono essere trovate in modo diretto attraverso la matrice di transizione, ma devono essere calcolate come soluzione di un sistema di equazioni lineari algebriche. In particolare, viene sottolineato che se il numero di livelli di confine è grande, la soluzione di questo sistema può diventare complessa e richiedere l'utilizzo di algoritmi appositi per risolverlo in modo efficiente. \\
+
+Gli autori presentano quindi un algoritmo che sfrutta la struttura tridiagonale a blocchi, ma dipendente dal livello, del generatore per i livelli inferiori a L+1, in modo da risolvere più efficientemente il sistema di equazioni lineari algebriche quando il numero di livelli di confine è elevato. \\
+
 
 % In un processo di Markov con matrice di transizione QBD (Quasi-Birth-Death), le transizioni possono essere classificate in due categorie: dipendenti dal livello o indipendenti dal livello.
 
@@ -344,7 +389,9 @@ Un livello di confine è un livello in cui le transizioni dipendono dal livello 
     \end{proof}
 \end{teorema}
 
-Questo algoritmo è una modifica efficace dell'algoritmo per il calcolo della distribuzione stazionaria del CTMC asintoticamente quasi-Toeplitz. Utilizzando la ricorsione di vettori come indicato nell'Equazione \ref{eq:rec-alpha} invece della ricorsione di matrici corrispondente, si ottiene una significativa riduzione della memoria del computer richiesta e del tempo di esecuzione. L'esistenza delle inverse delle matrici (tutte sub-generatori irriducibili) che appaiono nell'algoritmo sopra segue immediatamente, ad esempio, dal teorema di O. Tausska [55]. Inoltre, queste matrici sono semi-stabili (e quindi le inverse dei negativi di queste matrici sono non negative), risultando nella produzione di procedure ricorsive stabili nell'implementazione numerica dell'algoritmo.
+Questo algoritmo è una modifica efficace dell'algoritmo per il calcolo della distribuzione stazionaria del CTMC asintoticamente quasi-Toeplitz. Utilizzando la ricorsione di vettori come indicato nell'Equazione \ref{eq:rec-alpha} invece della ricorsione di matrici corrispondente, si ottiene una significativa riduzione della memoria del computer richiesta e del tempo di esecuzione. L'esistenza delle inverse delle matrici (tutte sub-generatori irriducibili) che appaiono nell'algoritmo sopra segue immediatamente dal teorema di O. Tausska. Inoltre, queste matrici sono semi-stabili (e quindi le inverse dei negativi di queste matrici sono non negative), risultando nella produzione di procedure ricorsive stabili nell'implementazione numerica dell'algoritmo.
+
+\paragraph{Matrice stocastica} Una matrice stocastica è una matrice quadrata in cui ogni elemento è non negativo e la somma degli elementi di ogni riga è uguale a 1. In altre parole, una matrice stocastica è una matrice di probabilità, in cui ogni elemento rappresenta la probabilità di transizione da uno stato a un altro in un processo stocastico. Ad esempio, in un processo di Markov a tempo discreto, la matrice di transizione è una matrice stocastica, in cui ogni elemento rappresenta la probabilità di transizione da uno stato a un altro nello spazio degli stati del processo. Le matrici stocastiche hanno alcune proprietà importanti, come la conservazione della probabilità, la reversibilità e la convergenza alla distribuzione stazionaria. La conservazione della probabilità implica che la somma degli elementi di ogni riga della matrice è uguale a 1, il che significa che la probabilità totale di transizione da uno stato a un altro è 1. La reversibilità implica che il processo stocastico può essere eseguito in modo indifferente in avanti o all'indietro nel tempo, e la convergenza alla distribuzione stazionaria implica che il processo raggiunge uno stato di equilibrio a lungo termine, in cui la distribuzione di probabilità del processo non cambia nel tempo.
 
 % \begin{corollario}
 %     Per $i \geq L$  vale la seguente formula
@@ -359,40 +406,42 @@ Questo algoritmo è una modifica efficace dell'algoritmo per il calcolo della di
 
 \clearpage
 
-\section{GI/M/1 Approach}
+% \section{GI/M/1 Approach}
 
-In questa sezione, presentiamo brevemente come analizzare il sistema di coda in studio utilizzando code di tipo GI/M/1 a tempo continuo. Una catena di Markov di tipo GI/M/1 è un processo stocastico che modella il comportamento di un sistema di coda con un singolo server. Il nome GI/M/1 sta per "General Inter-arrival time distribution", "Markovian service time distribution", e "one server". Analizziamo cosa significa ognuno di questi termini:
+% In questa sezione, presentiamo brevemente come analizzare il sistema di coda in studio utilizzando code di tipo GI/M/1 a tempo continuo. Una catena di Markov di tipo GI/M/1 è un processo stocastico che modella il comportamento di un sistema di coda con un singolo server. Il nome GI/M/1 sta per "General Inter-arrival time distribution", "Markovian service time distribution", e "one server". Analizziamo cosa significa ognuno di questi termini:
 
-\begin{itemize}
-    \item General inter-arrival time distribution (GI): si riferisce alla distribuzione del tempo tra gli arrivi dei clienti alla coda. Il tempo tra gli arrivi viene modellato come una variabile casuale con una certa distribuzione di probabilità, che può essere qualsiasi distribuzione, non necessariamente una distribuzione esponenziale.
+% \begin{itemize}
+%     \item General inter-arrival time distribution (GI): si riferisce alla distribuzione del tempo tra gli arrivi dei clienti alla coda. Il tempo tra gli arrivi viene modellato come una variabile casuale con una certa distribuzione di probabilità, che può essere qualsiasi distribuzione, non necessariamente una distribuzione esponenziale.
 
-    \item Markovian service time distribution (M): si riferisce alla distribuzione dei tempi di servizio per ciascun cliente, che viene assunta essere un processo di Markov. In altre parole, il tempo di servizio per un cliente dipende solo dallo stato del sistema quando il cliente arriva, e non da stati precedenti.
+%     \item Markovian service time distribution (M): si riferisce alla distribuzione dei tempi di servizio per ciascun cliente, che viene assunta essere un processo di Markov. In altre parole, il tempo di servizio per un cliente dipende solo dallo stato del sistema quando il cliente arriva, e non da stati precedenti.
 
-    \item One server (1): si riferisce al fatto che c'è un solo server nel sistema, e che solo un cliente alla volta può essere servito.
-\end{itemize}
+%     \item One server (1): si riferisce al fatto che c'è un solo server nel sistema, e che solo un cliente alla volta può essere servito.
+% \end{itemize}
 
-Insieme, questi tre componenti costituiscono le caratteristiche fondamentali di una catena di Markov di tipo GI/M/1, che è un tipo di modello di coda. Tenendo traccia del numero di clienti in attesa nella coda insieme allo stato del server principale (occupato o libero) e allo stato del server secondario (non presente o presente con un numero specificato di clienti assegnati), possiamo studiare il modello come una CTMC di tipo GI/M/1 come segue. \vspace*{0.4cm}
+% Insieme, questi tre componenti costituiscono le caratteristiche fondamentali di una catena di Markov di tipo GI/M/1, che è un tipo di modello di coda. Tenendo traccia del numero di clienti in attesa nella coda insieme allo stato del server principale (occupato o libero) e allo stato del server secondario (non presente o presente con un numero specificato di clienti assegnati), possiamo studiare il modello come una CTMC di tipo GI/M/1 come segue. \vspace*{0.4cm}
 
-\paragraph{Cosa sono i livelli?} In una catena di Markov a tempo continuo (CTMC), il "livello" rappresenta uno stato del sistema. Ogni stato del sistema è associato a un certo livello, che può essere rappresentato da un numero intero o da un altro tipo di identificatore univoco. Nella CTMC, il sistema evolve attraverso una sequenza di transizioni da uno stato a un altro. Ogni transizione avviene con una certa probabilità e ha un tasso di transizione associato. Il tasso di transizione rappresenta la frequenza con cui il sistema effettua una transizione da uno stato a un altro.
-I livelli sono utilizzati per descrivere le diverse configurazioni del sistema, ad esempio il numero di clienti in attesa in una coda, il numero di server in uso in un sistema informatico, il numero di pezzi in lavorazione in una linea di produzione, e così via. In una CTMC, i livelli possono essere finiti o infiniti, a seconda delle caratteristiche del sistema che si sta modellando. Inoltre, i livelli possono essere raggruppati in classi di equivalenza, dove tutti gli stati all'interno di una classe di equivalenza hanno la stessa probabilità di transizione verso qualsiasi altro stato all'interno della stessa classe. In sintesi, i livelli in una CTMC rappresentano gli stati del sistema e vengono utilizzati per descrivere le diverse configurazioni del sistema. Ogni livello ha un tasso di transizione associato che rappresenta la frequenza con cui il sistema effettua una transizione da uno stato a un altro. \\
+% \paragraph{Cosa sono i livelli?} In una catena di Markov a tempo continuo (CTMC), il "livello" rappresenta uno stato del sistema. Ogni stato del sistema è associato a un certo livello, che può essere rappresentato da un numero intero o da un altro tipo di identificatore univoco. Nella CTMC, il sistema evolve attraverso una sequenza di transizioni da uno stato a un altro. Ogni transizione avviene con una certa probabilità e ha un tasso di transizione associato. Il tasso di transizione rappresenta la frequenza con cui il sistema effettua una transizione da uno stato a un altro.
+% I livelli sono utilizzati per descrivere le diverse configurazioni del sistema, ad esempio il numero di clienti in attesa in una coda, il numero di server in uso in un sistema informatico, il numero di pezzi in lavorazione in una linea di produzione, e così via. In una CTMC, i livelli possono essere finiti o infiniti, a seconda delle caratteristiche del sistema che si sta modellando. Inoltre, i livelli possono essere raggruppati in classi di equivalenza, dove tutti gli stati all'interno di una classe di equivalenza hanno la stessa probabilità di transizione verso qualsiasi altro stato all'interno della stessa classe. In sintesi, i livelli in una CTMC rappresentano gli stati del sistema e vengono utilizzati per descrivere le diverse configurazioni del sistema. Ogni livello ha un tasso di transizione associato che rappresenta la frequenza con cui il sistema effettua una transizione da uno stato a un altro. \\
 
-\noindent Definiamo come prima cosa lo spazio degli stati $\Omega$ del CTMC come:
+% \paragraph{Cosa sono le fasi?} In una catena di Markov a tempo continuo (CTMC), una "fase" rappresenta un intervallo di tempo durante il quale il sistema rimane in uno stato particolare. Le fasi sono quindi una suddivisione dei livelli della CTMC in sottoinsiemi che rappresentano la permanenza del sistema in uno stato specifico. Durante una fase, il sistema può subire eventi di transizione, ovvero passare a uno stato diverso, oppure può rimanere nello stesso stato se non ci sono eventi di transizione. Ogni fase ha un inizio e una fine, che sono definiti dalla prima e dall'ultima transizione che la interrompono. In una CTMC, le fasi possono essere di due tipi: le fasi "stazionarie" e le fasi "transitorie". Le fasi stazionarie sono quelle in cui il sistema si mantiene nello stesso stato per un periodo di tempo indefinito, senza subire eventi di transizione. Le fasi transitorie, invece, sono quelle in cui il sistema subisce almeno una transizione da uno stato a un altro. Le fasi sono utili per descrivere la dinamica del sistema nel tempo e per analizzare le proprietà del sistema, come ad esempio il tempo medio di permanenza in uno stato o il tempo medio di attraversamento di una classe di equivalenza di stati. In sintesi, le fasi in una CTMC rappresentano gli intervalli di tempo durante i quali il sistema rimane in uno stato specifico, e possono essere stazionarie o transitorie. Le fasi sono utili per descrivere la dinamica del sistema nel tempo e per analizzare le proprietà del sistema. \\
 
-\begin{equation}
-    \Omega = \{ (i,j,k) ~ : ~ i \geq 0, 0 \leq j \leq K, 1 \leq k \leq m \}
-\end{equation}
-In seguito, consideriamo $e_r$ come un vettore colonna con 1 nella posizione $r-esima$ e 0 altrove. Notare che quando necessario, indicheremo la dimensione tra parentesi. Ad esempio, $e(L + 1)$ indicherà un vettore colonna di 1 con dimensione $L+1$. La "T" che appare come pedice in un vettore o una matrice sta per la notazione di trasposizione. Quindi, $e^T$ indicherà un vettore riga di 1. \vspace*{0.4cm}
+% \noindent Definiamo come prima cosa lo spazio degli stati $\Omega$ del CTMC come:
 
-\noindent Definiamo il livello
-$$\textbf{i} = \{(i, j, k) : 0 \leq j \leq L, 1 \leq k \leq m\} = \{(\textbf{i}, 0), \dots, (\textbf{i}, L)\}, i \geq 0$$
-Notare che il livello $(\textbf{i},\textbf{j})$ indica che il server principale è occupato (a patto che $i>0$), ci sono $i-1$ clienti in attesa nella coda principale, il server secondario (a patto che $j>0$) è occupato e il processo di arrivo si trova in varie fasi. Il livello $(\textbf{0},\textbf{0})$ corrisponde al sistema inattivo con il processo MAP in una delle $m$ fasi. Il generatore $\widetilde{Q}$ della CTMC che governa il sistema in studio è dato da:
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\textwidth]{FcngTm3.png}
-    \label{fig:GI-M-1}
-\end{figure}
+% \begin{equation}
+%     \Omega = \{ (i,j,k) ~ : ~ i \geq 0, 0 \leq j \leq K, 1 \leq k \leq m \}
+% \end{equation}
+% In seguito, consideriamo $e_r$ come un vettore colonna con 1 nella posizione $r-esima$ e 0 altrove. Notare che quando necessario, indicheremo la dimensione tra parentesi. Ad esempio, $e(L + 1)$ indicherà un vettore colonna di 1 con dimensione $L+1$. La "T" che appare come pedice in un vettore o una matrice sta per la notazione di trasposizione. Quindi, $e^T$ indicherà un vettore riga di 1. \vspace*{0.4cm}
 
-\textsc{Guardare paper, troppo lungo}
+% \noindent Definiamo il livello
+% $$\textbf{i} = \{(i, j, k) : 0 \leq j \leq L, 1 \leq k \leq m\} = \{(\textbf{i}, 0), \dots, (\textbf{i}, L)\}, i \geq 0$$
+% Notare che il livello $(\textbf{i},\textbf{j})$ indica che il server principale è occupato (a patto che $i>0$), ci sono $i-1$ clienti in attesa nella coda principale, il server secondario (a patto che $j>0$) è occupato e il processo di arrivo si trova in varie fasi. Il livello $(\textbf{0},\textbf{0})$ corrisponde al sistema inattivo con il processo MAP in una delle $m$ fasi. Il generatore $\widetilde{Q}$ della CTMC che governa il sistema in studio è dato da:
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{FcngTm3.png}
+%     \label{fig:GI-M-1}
+% \end{figure}
+
+% \textsc{Guardare paper, troppo lungo}
 
 \section{Risultati numerici}
 
@@ -419,7 +468,7 @@ I due processi correlati, negativo e positivo, sono i seguenti:
     \end{figure}
     dove abbiamo $\lambda = 0.5, \sigma = 2.02454$ e $\rho_c = 0.57855$.
 \end{itemize}
-Guardando le cinque MAP sopra riportate, è evidente che sono tutte qualitativamente diverse. È importante sottolineare che il processo di arrivo denominato PCR è ideale per situazioni in cui gli arrivi dei clienti sono altamente irregolari, con periodi alternati di congestione e di scarsità del sistema. Tali arrivi sono comuni nella pratica, specialmente nelle telecomunicazioni e nelle industrie dei servizi. È importante notare, inoltre, che il processo di arrivo denominato HEX è noto per presentare un comportamento irregolare simile nel senso che gli arrivi con tempi tra di essi più brevi sono separati da tempi più lunghi. Tuttavia, la differenza tra questi due processi sta nella correlazione positiva presente nel processo PCR. L'impatto di questa correlazione positiva, così come dell'elevata variabilità nei tempi tra gli arrivi, come nei due processi sopra citati, è stato ben documentato in letteratura (vedi, ad esempio, riferimenti [29,30]). Discutiamo tre esempi numerici rappresentativi e illustrativi per evidenziare la natura qualitativa del modello in studio.
+Guardando le cinque MAP sopra riportate, è evidente che sono tutte qualitativamente diverse. È importante sottolineare che il processo di arrivo denominato PCR è ideale per situazioni in cui gli arrivi dei clienti sono altamente irregolari, con periodi alternati di congestione e di scarsità del sistema. Tali arrivi sono comuni nella pratica, specialmente nelle telecomunicazioni e nelle industrie dei servizi. Invece, il processo di arrivo HEX è noto per presentare un comportamento irregolare simile: che gli arrivi con tempi tra di essi più brevi sono separati da tempi più lunghi. Tuttavia, la differenza tra questi due processi sta nella correlazione positiva presente nel processo PCR. Discutiamo tre esempi numerici rappresentativi e illustrativi per evidenziare la natura qualitativa del modello in studio.
 
 \subsection{Primo esempio numerico}
 Qui discutiamo l'impatto del parametro L su alcune misure di performance del sistema selezionate per tutte e cinque le MAP. Innanzitutto, fissiamo $\mu_1=1$, $\mu_2=0.5$, $q=0.5$, e $\nu=0.4$, e variamo $L$ da 1 a 30.
@@ -430,9 +479,10 @@ Qui discutiamo l'impatto del parametro L su alcune misure di performance del sis
     \caption{Impact of L on the average number of customers in the system $L_{system}$ for different MAPs.}
     \label{fig:1}
 \end{figure}
-La Figura \ref{fig:1} illustra chiaramente l'effetto dell'irregolarità nel processo di arrivo, ovvero PCR. Il numero medio di clienti nel sistema nel caso di PCR è molte volte maggiore rispetto agli altri MAPs. Vale la pena sottolineare che per i primi quattro MAPs, la misura $L_\text{system}$ è una funzione non decrescente di $L$, mentre per PCR si osserva un trend non crescente. Ciò spiega il ruolo della correlazione, soprattutto positiva, e non dovrebbe essere ignorato. Inoltre, un valore elevato di L indica che quando un server secondario viene reclutato, verranno assegnati più clienti e, a causa della lentezza del server secondario (rispetto al server principale), c'è una alta probabilità, soprattutto per i casi dei primi quattro MAPs, che il sistema abbia in media più clienti nel sistema. Similmente a quanto noto nella coda classica, ovvero il numero medio nel sistema aumenta con l'aumento della variabilità nei tempi di arrivo tra gli arrivi di rinnovo, vediamo che questo comportamento si verifica anche qui nei primi tre MAPs, che corrispondono agli arrivi di rinnovo. \vspace{0.4cm}
+La Figura \ref{fig:1} illustra chiaramente l'effetto dell'irregolarità nel processo di arrivo PCR. Il numero medio di clienti nel sistema nel caso di PCR è molte volte maggiore rispetto agli altri MAPs. Per i primi quattro MAPs, la misura $L_\text{system}$ è una funzione non decrescente di $L$, mentre per PCR si osserva un trend non crescente. Inoltre, un valore elevato di L indica che quando un server secondario viene reclutato, verranno assegnati più clienti e, a causa della lentezza del server secondario (rispetto al server principale), c'è una alta probabilità, soprattutto per i casi dei primi quattro MAPs, che il sistema abbia in media più clienti nel sistema. \\
+% Similmente a quanto noto nella coda classica, ovvero il numero medio nel sistema aumenta con l'aumento della variabilità nei tempi di arrivo tra gli arrivi di rinnovo, vediamo che questo comportamento si verifica anche qui nei primi tre MAPs, che corrispondono agli arrivi di rinnovo. \vspace{0.4cm}
 
-\noindent Tuttavia, per quanto riguarda gli arrivi PCR, osserviamo un trend interessante ma opposto, ovvero un trend decrescente. Questo può essere intuitivamente spiegato come segue. Innanzitutto, si osserva che il sistema L ha un valore massimo di 15.3983 quando $L = 1$, il che può essere spiegato utilizzando il fatto che, quando $L = 1$, i server secondari lasciano il sistema dopo aver servito un solo cliente; con una probabilità del solo 0.5 di essere reclutati, la coda tende ad accumularsi rapidamente. Aumentando L, i server secondari sono maggiormente coinvolti nella pulizia della coda, soprattutto quando gli arrivi avvengono a sprazzi, e quindi $L_\text{system}$ diminuisce. Raggiunge un valore minimo di 11.9757 quando $L = 16$ e poi inizia ad aumentare a causa della mancata possibilità di essere serviti dal server principale. Per $L = 30, L_\text{system} = 12.0605$ \vspace{0.4cm}
+\noindent Tuttavia, per quanto riguarda gli arrivi PCR, osserviamo un trend interessante ma opposto, ovvero un trend decrescente. Questo può essere intuitivamente spiegato come segue. Innanzitutto, si osserva che il sistema L ha un valore massimo quando $L = 1$, il che può essere spiegato utilizzando il fatto che, quando $L = 1$, i server secondari lasciano il sistema dopo aver servito un solo cliente; con una probabilità del solo 0.5 di essere reclutati, la coda tende ad accumularsi rapidamente. Aumentando L, i server secondari sono maggiormente coinvolti nella pulizia della coda, soprattutto quando gli arrivi avvengono a sprazzi, e quindi $L_\text{system}$ diminuisce. Raggiunge un valore minimo quando $L = 16$ e poi inizia ad aumentare a causa della mancata possibilità di essere serviti dal server principale. \vspace{0.4cm}
 
 \begin{figure}[h]
     \centering
@@ -442,7 +492,7 @@ La Figura \ref{fig:1} illustra chiaramente l'effetto dell'irregolarità nel proc
     \label{fig:2}
 \end{figure}
 
-\noindent La Figura \ref{fig:2} mostra il comportamento della media del numero di clienti con il server secondario $L_{\mathrm{sec}}$.
+\noindent La Figura \ref{fig:2}mostra il comportamento del numero medio di clienti con il server secondario $L_{sec}$. Come ci si può aspettare, si nota che $L_{sec}$ aumenta quando L aumenta. Come nella figura precedente, il valore di $L_{sec}$ è, in generale, elevato nel caso del PCR. Solo per valori piccoli di $L$, questo valore è più piccolo per l'ERL-NCR. Ciò può essere spiegato dall'elevata irregolarità degli arrivi osservata nel processo PCR, che provoca la fame del sistema, durante la quale solo il server principale è occupato per la maggior parte del tempo nell'offrire servizi. Tra l'ERL-HEX, si conferma l'effetto noto che una maggiore varianza implica un gran numero di clienti nel sistema.
 
 \clearpage
 \begin{figure}[h]
@@ -452,7 +502,7 @@ La Figura \ref{fig:1} illustra chiaramente l'effetto dell'irregolarità nel proc
     \label{fig:3}
 \end{figure}
 
-La Figura \ref{fig:3} illustra il comportamento della probabilità,  $P_{\mathrm{idle-system}}$, che il sistema sia inattivo in un momento arbitrario. Questa figura corrisponde alla Figura \ref{fig:1} su due aspetti. Il primo è che mostra anche una grande differenza nella misura quando viene confrontata con vari MAPs. Quando si cerca di trovare un valore ottimale di L, è evidente che conta quale misura viene scelta come funzione obiettivo e il tipo di MAPs utilizzato quando tutti gli altri parametri sono fissati. Ad esempio, se si considera il processo di arrivo PCR, il valore ottimale di L è 16 se si cerca di minimizzare $L_{\mathrm{system}}$. Tuttavia, se la misura  $P_{\mathrm{idle-system}}$ è l'obiettivo del problema di ottimizzazione, allora $L = $6 produce il valore più grande per questa misura. \vspace{0.4cm}
+La Figura \ref{fig:3} illustra il comportamento della probabilità,  $P_{\mathrm{idle-system}}$, che il sistema sia inattivo in un momento arbitrario. Questa figura corrisponde alla Figura \ref{fig:1} su due aspetti. Il primo è la grande discrepanza nella misura quando viene confrontata tra i vari MAPs. Quando si cerca di trovare un valore ottimale di L, è evidente che conta quale misura viene scelta come funzione obiettivo e il tipo di MAPs utilizzato quando tutti gli altri parametri sono fissati. Ad esempio, se si considera il processo di arrivo PCR, il valore ottimale di L è 16 se si cerca di minimizzare $L_{\mathrm{system}}$. Tuttavia, se la misura  $P_{\mathrm{idle-system}}$ è l'obiettivo del problema di ottimizzazione, allora $L = $6 produce il valore più grande per questa misura. \vspace{0.4cm}
 
 \begin{figure}[h]
     \centering
@@ -468,14 +518,14 @@ La Figura \ref{fig:3} illustra il comportamento della probabilità,  $P_{\mathrm
     \label{fig:5}
 \end{figure}
 
-Le Figure \ref{fig:4} e \ref{fig:5} illustrano il comportamento delle probabilità $P_{\mathrm{idle-busy}}$ e  $P_{\mathrm{busy-idle}}$, che corrispondono rispettivamente al momento in cui il server principale è inattivo con il server secondario occupato, e al momento in cui il server principale è occupato con il server secondario inattivo, in un momento arbitrario. Mentre la prima probabilità aumenta all'aumentare di L, la seconda probabilità diminuisce. Da queste figure, si possono notare le differenze essenziali in queste probabilità in vari scenari.
+Le Figure \ref{fig:4} e \ref{fig:5} illustrano il comportamento delle probabilità $P_{\mathrm{idle-busy}}$ e  $P_{\mathrm{busy-idle}}$, che corrispondono rispettivamente al momento in cui il server principale è inattivo con il server secondario occupato, e al momento in cui il server principale è occupato con il server secondario inattivo, in un momento arbitrario. Mentre la prima probabilità aumenta all'aumentare di L, la seconda probabilità diminuisce.
 
 \clearpage
 
 \subsection{Secondo esempio numerico}
-Lo scopo di questo esempio è di indagare l'impatto dei parametri $q$ (ricorda che questo è la probabilità che un cliente servito si rifiuti di agire come server secondario) e $\nu$ (questa è la probabilità che un cliente servito da un server secondario sia insoddisfatto e torni al sistema). Fissiamo il valore di $L$ a $10$ (punto medio tra i due valori ottimali menzionati nel primo esempio). Fissiamo anche i tassi di servizio come $\mu_1 = 1$ e $\mu_2 = 0.5$ e indaghiamo la dipendenza di diverse misure di prestazione dalle probabilità $q$ e $\nu$. Variamo i valori di queste probabilità da $0$ a $1$ con passo $0.05$. Si noti che il valore $q = 1$ corrisponde al classico sistema MAP/M/1 con il tasso di servizio $\mu_1$. \vspace{0.4cm}.
+Lo scopo di questo esempio è di indagare l'impatto dei parametri $q$ (la probabilità che un cliente servito si rifiuti di agire come server secondario) e $\nu$ (questa è la probabilità che un cliente servito da un server secondario sia insoddisfatto e torni al sistema). Fissiamo il valore di $L$ a $10$ (punto medio tra i due valori ottimali menzionati nel primo esempio). Fissiamo anche i tassi di servizio come $\mu_1 = 1$ e $\mu_2 = 0.5$ e indaghiamo la dipendenza di diverse misure di prestazione dalle probabilità $q$ e $\nu$. Variamo i valori di queste probabilità da $0$ a $1$ con passo $0.05$. Si noti che il valore $q = 1$ corrisponde al classico sistema MAP/M/1 con il tasso di servizio $\mu_1$. \vspace{0.4cm}.
 
-\noindent In questo esempio ci concentriamo sul processo di arrivo etichettato come PCR, la cui scelta è basata sul comportamento di questo processo sulle misure evidenziato nel primo esempio illustrativo. Dalla Figura \ref{fig:6}, che mostra la dipendenza del numero medio di clienti nel sistema $L_\mathrm{system}$ dai parametri $q$ e $\nu$, deduciamo diverse osservazioni interessanti.
+\noindent In questo esempio ci concentriamo sul processo PCR, essendosi dimostrato un caso particolare nel primo esempio illustrativo. Dalla Figura \ref{fig:6}, che mostra la dipendenza del numero medio di clienti nel sistema $L_\mathrm{system}$ dai parametri $q$ e $\nu$, deduciamo diverse osservazioni interessanti.
 
 \begin{figure}[h]
     \centering
@@ -484,7 +534,7 @@ Lo scopo di questo esempio è di indagare l'impatto dei parametri $q$ (ricorda c
     \label{fig:6}
 \end{figure}
 
-Il valore di $L_\mathrm{system}$ è minimo con un valore di $7,9328$ quando il cliente servito è sempre disponibile per essere reclutato (quando il sistema ne ha bisogno) e quando il cliente che riceve il servizio da un server secondario è sempre soddisfatto. Il valore minimo si ottiene quando $q = 0$ e $\nu = 0$. Questa misura aumenta quando aumenta $q$ o $\nu$, e il tasso di aumento diventa più elevato quando uno o entrambi si avvicinano al valore 1. Quando $q = 1$, il sistema si trasforma nel corrispondente modello di coda MAP/M/1 classico e in un sistema senza l'uso del server secondario, e $L_\mathrm{system} = 22,30425$ per tutti i valori di $\nu$ (come è evidente). Quando $q = 0$, che corrisponde al caso in cui un cliente servito viene sempre reclutato (quando necessario), anche quando la probabilità di insoddisfazione è alta ($\nu = 0,5$), il valore di $L_\mathrm{system}$ è pari a $12,91247$. Pertanto, l'uso di un server secondario riduce essenzialmente il numero medio di clienti nel sistema di più del $40\%$. Inoltre, abbiamo cercato il punto di interruzione, diciamo $\nu^*$, per una percentuale di insoddisfazione tale per cui il modello classico di coda è migliore del modello proposto qui. Per i parametri di questo esempio, il punto di interruzione è $\nu^* \sim 0,985$, nel senso che la percentuale di insoddisfazione deve essere superiore al $98,5\%$ affinché il modello classico funzioni meglio. \vspace{0.4cm}
+Il valore di $L_\mathrm{system}$ è minimo quando il cliente servito è sempre disponibile per essere reclutato (quando il sistema ne ha bisogno) e quando il cliente che riceve il servizio da un server secondario è sempre soddisfatto. Il valore minimo si ottiene quando $q = 0$ e $\nu = 0$. Questa misura aumenta quando aumenta $q$ o $\nu$, e il tasso di aumento diventa più elevato quando uno o entrambi si avvicinano al valore 1. Quando $q = 1$, il sistema si trasforma nel corrispondente modello di coda MAP/M/1 classico e in un sistema senza l'uso del server secondario, e $L_\mathrm{system} \sim 22$ per tutti i valori di $\nu$ (come è evidente). Quando $q = 0$, che corrisponde al caso in cui un cliente servito viene sempre reclutato (quando necessario), anche quando la probabilità di insoddisfazione è alta ($\nu = 0,5$), il valore di $L_\mathrm{system}$ è circa $13$. Pertanto, l'uso di un server secondario riduce essenzialmente il numero medio di clienti nel sistema di più del $40\%$. Inoltre, gli autori mostrano che esiste un valore di $\nu$ tale per cui il modello classico di coda è migliore del modello proposto qui. Questo valore è molto alto, arrivando alla conclusione che la percentuale di insoddisfazione deve essere superiore al $98,5\%$ affinché il modello classico funzioni meglio. \vspace{0.4cm}
 
 \begin{figure}[h]
     \centering
@@ -493,8 +543,9 @@ Il valore di $L_\mathrm{system}$ è minimo con un valore di $7,9328$ quando il c
     \label{fig:7}
 \end{figure}
 
-Per testare ulteriormente l'importo della riduzione nel numero medio, abbiamo aumentato $\lambda$ del $50\%$ a $\lambda = 0.75$. Mantenendo tutti gli altri parametri (ad eccezione della normalizzazione dei parametri del processo di arrivo per ottenere questo specifico $\lambda$) gli stessi, abbiamo ottenuto una percentuale di riduzione superiore al $52,8\%$. Pertanto, un aumento del carico del sistema beneficerà notevolmente dell'avere un server secondario per aiutare il sistema anche con un tasso di insoddisfazione del cliente del $50\%$ con questo server secondario.
-La figura \ref{fig:7} mostra la dipendenza del numero medio di clienti con il server secondario $L_\mathrm{sec}$ dai parametri $q$ e $\nu$. Questa probabilità diminuisce significativamente quando $q$ si avvicina a $1$ e quando i clienti sono raramente reclutati per diventare server secondari. $L_\mathrm{sec}$ ha il valore massimo quando $q$ è uguale a zero, ovvero tutti i clienti vengono reclutati (quando necessario) per diventare server secondari, e quando $\nu$ è vicino a 1. Ovviamente, in quest'ultimo caso, quasi tutti i clienti serviti da un server secondario devono essere rimandati al sistema a causa della loro insoddisfazione. Questo spiega la creazione di ulteriore lavoro per il sistema e dovrebbe essere scoraggiato ricorrendo alla coda classica anziché reclutare server secondari "scarsi". Vale la pena sottolineare che un sistema del genere (scadente) può riflettersi negativamente sul sistema stesso per la fornitura di servizi che non possono essere replicati da altri clienti serviti.
+Per testare ulteriormente l'importo della riduzione nel numero medio, aumentano $\lambda$ del $50\%$ a $\lambda = 0.75$. Mantenendo tutti gli altri parametri (ad eccezione della normalizzazione dei parametri del processo di arrivo per ottenere questo specifico $\lambda$) gli stessi, ottenendo una percentuale di riduzione superiore al $52,8\%$. Pertanto, un aumento del carico del sistema beneficerà notevolmente dell'avere un server secondario per aiutare il sistema anche con un tasso di insoddisfazione del cliente del $50\%$ con questo server secondario. \\
+
+La figura \ref{fig:7} mostra invece la dipendenza del numero medio di clienti con il server secondario $L_\mathrm{sec}$ dai parametri $q$ e $\nu$. Questa probabilità diminuisce significativamente quando $q$ si avvicina a $1$ e quando i clienti sono raramente reclutati per diventare server secondari. $L_\mathrm{sec}$ ha il valore massimo quando $q$ è uguale a zero, ovvero tutti i clienti vengono reclutati (quando necessario) per diventare server secondari, e quando $\nu$ è vicino a 1. Ovviamente, in quest'ultimo caso, quasi tutti i clienti serviti da un server secondario devono essere rimandati al sistema a causa della loro insoddisfazione.
 
 \begin{figure}[h!]
     \centering
@@ -503,7 +554,7 @@ La figura \ref{fig:7} mostra la dipendenza del numero medio di clienti con il se
     \label{fig:8}
 \end{figure}
 
-Nella Figura \ref{fig:8}, è mostrato il comportamento della probabilità $P_\mathrm{idle-system}$ che il sistema è inattivo in un momento arbitrario come funzione di $q$ e $\nu$. Questa probabilità ha il valore minimo di $0.4445$ quando $\nu = 1$ e $q = 0$, il che è intuitivamente chiaro, poiché dover servire nuovamente i clienti dopo aver passato attraverso un server secondario mette un carico sul sistema. La probabilità che $P_\mathrm{idle-system}$ aumenta quando $q$ aumenta e/o $\nu$ diminuisce: il valore massimo $0.5652$ di questa probabilità si ottiene quando $q = 0.65$ e $\nu = 0$. Nel corrispondente sistema MAP/M/1 classico, questa misura è $P_\mathrm{idle-system} = 0.5$.
+Nella Figura \ref{fig:8}, è mostrato il comportamento della probabilità $P_\mathrm{idle-system}$ che il sistema è inattivo in un momento arbitrario in funzione di $q$ e $\nu$. Questa probabilità ha valore minimo quando $\nu = 1$ e $q = 0$, il che è intuitivamente chiaro, poiché dover servire nuovamente i clienti dopo aver passato attraverso un server secondario mette un carico sul sistema. La probabilità che $P_\mathrm{idle-system}$ aumenta quando $q$ aumenta e/o $\nu$ diminuisce: il valore massimo di questa probabilità si ottiene quando $q = 0.65$ e $\nu = 0$.
 
 \vspace{0.4cm}
 
@@ -512,10 +563,10 @@ Nella Figura \ref{fig:8}, è mostrato il comportamento della probabilità $P_\ma
 \clearpage
 \subsection{Esempio numerico 3}
 
-In questo ultimo esempio, analizziamo l'impatto della variazione dei tassi di servizio $\mu_1$ e $\mu_2$ quando tutti gli altri parametri sono fissati. A tal fine, fissiamo $L = 10$, $q = 0.5$, $\nu = 0.4$ e $\lambda = 0.5$. I tassi $\mu_1$ e $\mu_2$ vengono variati da $0.25$ a $2.0$ con incrementi di $0.05$. È importante menzionare che, per soddisfare la condizione di ergodicità (vedi Equazione \ref{eq:ergodicity}), limitiamo ulteriormente il valore di $\mu_2$ quando $\mu_1$ è piccolo. In particolare, quando $\mu_1 = 0.25$, il valore minimo del tasso $\mu_2$ (con il passo sopra descritto di $0.05$) è scelto in modo tale da non essere inferiore a $0.65$. Quando $\mu_1 = 0.3$, il tasso $\mu_2$ è scelto in modo tale da non essere inferiore a $0.45$. Quando $\mu_1 = 0.35$, il tasso $\mu_2$ è scelto in modo tale da non essere inferiore a $0.3$. Solo per $\mu_1 \geq 0.4$, il valore di $\mu_2$ può essere variato da $0.25$, come originariamente indicato.
+In questo ultimo esempio, analizziamo l'impatto della variazione dei tassi di servizio $\mu_1$ e $\mu_2$ quando tutti gli altri parametri sono fissati. A tal fine, fissiamo $L = 10$, $q = 0.5$, $\nu = 0.4$ e $\lambda = 0.5$. I tassi $\mu_1$ e $\mu_2$ vengono variati da $0.25$ a $2.0$ con incrementi di $0.05$. È importante menzionare che, per soddisfare la condizione di ergodicità (vedi Equazione \ref{eq:ergodicity}), limitiamo ulteriormente il valore di $\mu_2$ quando $\mu_1$ è piccolo.
+% In particolare, quando $\mu_1 = 0.25$, il valore minimo del tasso $\mu_2$ (con il passo sopra descritto di $0.05$) è scelto in modo tale da non essere inferiore a $0.65$. Quando $\mu_1 = 0.3$, il tasso $\mu_2$ è scelto in modo tale da non essere inferiore a $0.45$. Quando $\mu_1 = 0.35$, il tasso $\mu_2$ è scelto in modo tale da non essere inferiore a $0.3$. Solo per $\mu_1 \geq 0.4$, il valore di $\mu_2$ può essere variato da $0.25$, come originariamente indicato.
 
-
-Con le sopra descritte restrizioni sulla scelta di $\mu_1$ e $\mu_2$, mostriamo nelle Figure \ref{fig:9} e \ref{fig:10} la dipendenza della misura $L_{\text{system}}$ da $\mu_1$ e $\mu_2$. Nella Figura \ref{fig:9}, gran parte della superficie che mostra la dipendenza appare piatta. Ciò è dovuto al fatto che, per molte combinazioni dei valori dei parametri con un piccolo tasso $\mu_1$, la condizione di ergodicità viene violata e la misura $L_{\text{system}}$ diventa molto grande. Pertanto, nella Figura \ref{fig:10}, la dipendenza di $L_{\text{system}}$ da $\mu_1$ e $\mu_2$ è mostrata solo per valori non piccoli di $\mu_1$. Chiaramente, si può notare una tendenza decrescente, poiché $L_{\text{system}}$ diminuisce rapidamente quando $\mu_1$ aumenta per $\mu_2$ fissato e viceversa.
+Nelle Figure \ref{fig:9} e \ref{fig:10} viene evidenziata la dipendenza della misura $L_{\text{system}}$ da $\mu_1$ e $\mu_2$. Nella Figura \ref{fig:9}, gran parte della superficie che mostra la dipendenza appare piatta. Ciò è dovuto al fatto che, per molte combinazioni dei valori dei parametri con un piccolo tasso $\mu_1$, la condizione di ergodicità viene violata e la misura $L_{\text{system}}$ diventa molto grande. Invece, se andiamo a zoommare, nella Figura \ref{fig:10}, la dipendenza di $L_{\text{system}}$ da $\mu_1$ e $\mu_2$ è rappresentata solo per valori non piccoli di $\mu_1$. Chiaramente, si può notare una tendenza decrescente, poiché $L_{\text{system}}$ diminuisce rapidamente quando $\mu_1$ aumenta per $\mu_2$ fissato e viceversa.
 
 \begin{figure}[h]
     \centering
@@ -534,7 +585,7 @@ Con le sopra descritte restrizioni sulla scelta di $\mu_1$ e $\mu_2$, mostriamo 
 \end{figure}
 
 La Figura \ref{fig:11} mostra il comportamento del numero medio di clienti con il server
-secondario $L_\mathrm{sec}$. Il valore di $L_\mathrm{sec}$ è massimizzato con un valore di circa 5 quando $\mu_1$ e $\mu_2$ sono piccoli. Questo è intuitivamente chiaro poiché per valori piccoli di $\mu_1$ e $\mu_2$, la condizione di ergodicità è vicina a essere violata, causando un alto tasso di reclutamento per i server secondari che, molto probabilmente prima di lasciare il sistema, serviranno un gruppo di dimensione $L = 10$. Pertanto, il numero medio di clienti in servizio in un momento arbitrario è di circa 5. Con un aumento di $\mu_1$ e $\mu_2$, il valore di $L_\mathrm{sec}$ diminuisce come ci si aspetterebbe. Per valori piccoli di $\mu_1$, la diminuzione è significativa all'aumentare di $\mu_2$; per valori più grandi di $\mu_1$, notiamo un tasso insignificante di diminuzione in $L_\mathrm{sec}$ con un aumento di $\mu_2$.
+secondario $L_\mathrm{sec}$. Il valore di $L_\mathrm{sec}$ è massimo quando $\mu_1$ e $\mu_2$ sono piccoli. Questo è intuitivamente chiaro poiché per valori piccoli di $\mu_1$ e $\mu_2$: la condizione di ergodicità è vicina a essere violata, causando un alto tasso di reclutamento per i server secondari che, molto probabilmente prima di lasciare il sistema, serviranno un gruppo di dimensione $L = 10$. Con un aumento di $\mu_1$ e $\mu_2$, il valore di $L_\mathrm{sec}$ diminuisce come ci si aspetterebbe. Per valori piccoli di $\mu_1$, la diminuzione è significativa all'aumentare di $\mu_2$; per valori più grandi di $\mu_1$, notiamo un tasso insignificante di diminuzione in $L_\mathrm{sec}$ con un aumento di $\mu_2$.
 
 \begin{figure}[h]
     \centering
