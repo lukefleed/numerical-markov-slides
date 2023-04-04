@@ -20,7 +20,6 @@
 \usepackage{mathtools}
 \usepackage{nccmath}
 
-% add counters for theorems, definutions, remarks, etc. In italian
 \newtheorem{teorema}{Teorema}[section]
 \newtheorem{definuzione}[teorema]{Definuzione}
 \newtheorem{osservazione}[teorema]{Osservazione}
@@ -235,6 +234,7 @@ Nel caso di un QBD, la condizione di ergodicità è importante perché determina
     \item Il processo deve essere irriducibile. Ciò significa che ogni stato del processo può essere raggiunto da ogni altro stato con una certa probabilità in un numero finito di passi.
     \item Il processo deve essere aperiodico. Ciò significa che non esiste un ciclo di stati che il processo attraversa regolarmente.
 \end{itemize}
+
 \paragraph{Formalismo}  Siamo interessati a studiare l'ergodicità, la probabilità $\pi(j)$ di essere nello stato $j$ dopo un lungo periodo di tempo, indipendentemente dallo stato iniziale $i$. Formalmente in una catena di Markov si dice \emph{ergodica} se il limite
 $$ \pi(j) = \lim_{n\to \infty} \mathbb{P}_i \{X_n = j\} $$
 esiste per ogni stato $j$ e non dipende dallo stato iniziale $i$. Questo può anche essere scritto come
@@ -301,7 +301,7 @@ Andiamo a vedere come si può esprimere questa proprietà nel nostro caso di stu
 
 \subsection{Probabilità Stazionaria}
 
-In un processo di nascita e morte a coda (QBD), lo stato stazionario rappresenta una distribuzione di probabilità sulla configurazione di stato del sistema che si raggiunge nel lungo periodo, quando il processo raggiunge uno stato di equilibrio. Il vettore invariante di probabilità (o distribuzione stazionaria) è un vettore di probabilità che rappresenta lo stato stazionario del sistema. In particolare, se il processo di nascita e morte a coda è regolare e irriducibile, allora esiste un unico vettore invariante di probabilità, che rappresenta la distribuzione di probabilità stazionaria del sistema.  Lo stato stazionario del QBD rappresenta il comportamento asintotico del sistema, mentre il vettore invariante di probabilità rappresenta la distribuzione di probabilità del sistema in equilibrio. Sotto l'assunzione che la condizione di ergodicità data dalla relazione \ref{eq:ergodicity} sia valida, esistono le seguenti probabilità stazionarie degli stati del CTMC $\zeta_t, t \geq 0$:
+Lo stato stazionario di una catena di Markov a tempo continuo (CTMC) è un punto di equilibrio a lungo termine, in cui la distribuzione di probabilità della catena non cambia nel tempo. In altre parole, quando una CTMC raggiunge lo stato stazionario, la probabilità di trovarsi in ciascuno dei suoi stati rimane costante nel tempo, anche se la CTMC continua a muoversi da uno stato all'altro. Sotto l'assunzione che la condizione di ergodicità data dalla relazione \ref{eq:ergodicity} sia valida, esistono le seguenti probabilità stazionarie degli stati del CTMC $\zeta_t, t \geq 0$:
 \begin{equation}
     \pi(i,n,\zeta) = \lim_{t \to \infty} P\{i_t = i, n_t = n, \zeta_t = \zeta\}, ~ i \geq 0, \quad n \in \{0, 1, \dots , \min\{i,L\}\}, \quad \zeta \in \{0, \dots, n\}
 \end{equation}
